@@ -1,0 +1,56 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "§cHutao §eAntiCheat",
+    "description": "The best anti cheat for Minecraft Bedrock/Pocket Edition",
+    "uuid": "16013507-1e83-65f7-67b3-e73fdcf02efe",
+    "version": [
+      1,
+      0,
+      0
+    ],
+    "min_engine_version": [
+      1,
+      20,
+      40
+    ]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "81e9171f-37cd-8e5f-be0b-deb8b4e254ab",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "language": "javascript",
+      "type": "script",
+      "uuid": "28e8665e-db5b-da9c-dcc9-83e53a477ea1",
+      "version": [
+        1,
+        0,
+        0
+      ],
+      "entry": "scripts/index.js"
+    }
+  ],
+  "metadata": {
+    "authors": [
+      "Hutao999999"
+    ],
+    "url": "https://github.com/Hutao999999/HutaoAntiCheat"
+  },
+  "dependencies": [
+    {
+      "module_name": "@minecraft/server",
+      "version": "1.7.0-beta"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "1.2.0-beta"
+    }
+  ]
+}
