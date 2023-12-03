@@ -201,11 +201,6 @@ export const configCache = {
         punishment: "tempkick",
         flags: 10
       },
-      badPacketC: {
-        state: true,
-        punishment: "tempkick",
-        flags: 10
-      },
       blinkA: {
         state: true,
         punishment: "tempkick",
@@ -448,6 +443,11 @@ export const configCache = {
         punishment: "tempkick",
         flags: 10
       },
+      nukerG: {
+        state: true,
+        punishment: "tempkick",
+        flags: 10
+      },
       reachA: {
         state: true,
         punishment: "tempkick",
@@ -518,6 +518,11 @@ export const configCache = {
         flags: 10
       },
       scaffoldJ: {
+        state: true,
+        punishment: "tempkick",
+        flags: 10
+      },
+      scaffoldK: {
         state: true,
         punishment: "tempkick",
         flags: 10

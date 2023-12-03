@@ -202,7 +202,7 @@ export class World {
     return message.trim()
   }
 
-  static wrongCommand(player, message, index = 0, type = "normal") {
+  static wrongCommand(player, message, index = 0) {
     message = message.join(" ")
     let allCommand = message
 

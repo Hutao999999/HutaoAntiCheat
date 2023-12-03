@@ -8,8 +8,13 @@ export const fly = (player) => {
       player.isFlying &&
       Hutao.Player.getGamemode(player) != "spectator"
     ) {
+      const gamemode = Hutao.Player.getGamemode(player)
+
       Hutao.Player.checking(player, `Fly`, `A`)
       Hutao.Player.returnLastLocation(player)
+
+      Hutao.Player.setGamemode(player, "spectator")
+      Hutao.Player.setGamemode(player, gamemode)
     }
   }
 }

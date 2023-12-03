@@ -22,7 +22,7 @@ export const antiCheat = (player) => {
   aura(player)
   autoArmor(player)
   autoTool(player)
-  // badPacket(player)
+  badPacket(player)
   blink(player)
   crasher(player)
   fastLadder(player)

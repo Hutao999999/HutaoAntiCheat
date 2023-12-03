@@ -5,12 +5,12 @@ export const autoTool = (player) => {
   if (setting.default.data.antiCheat.autoToolA.state) {
     if (
       player.autoToolAChecking &&
-      player.selectedSlot != player.lastAction.selectedSlot &&
+      player.selectedSlot != player.lastAction?.selectedSlot &&
       tools.includes(player.getComponent("inventory").container.getItem(player.selectedSlot)?.typeId)
     ) {
       Hutao.Player.checking(player, `AutoTool`, `A`)
 
-      player.selectedSlot = player.lastAction.selecteSlot
+      player.selectedSlot = player.lastAction?.selectedSlot
     }
   }
 

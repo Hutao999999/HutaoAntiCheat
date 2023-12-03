@@ -201,11 +201,6 @@ export default {
         punishment: "tempkick",
         flags: 10
       },
-      badPacketC: {
-        state: true,
-        punishment: "tempkick",
-        flags: 10
-      },
       blinkA: {
         state: true,
         punishment: "tempkick",
@@ -448,6 +443,11 @@ export default {
         punishment: "tempkick",
         flags: 10
       },
+      nukerG: {
+        state: true,
+        punishment: "tempkick",
+        flags: 10
+      },
       reachA: {
         state: true,
         punishment: "tempkick",
@@ -518,6 +518,11 @@ export default {
         flags: 10
       },
       scaffoldJ: {
+        state: true,
+        punishment: "tempkick",
+        flags: 10
+      },
+      scaffoldK: {
         state: true,
         punishment: "tempkick",
         flags: 10
@@ -847,7 +852,10 @@ export const languages = {
     kickItem: "Kick Item",
     tempkickItem: "Tempkick Item",
 
-    refresh: "Refresh"
+    refresh: "Refresh",
+    blinkADescription: "Check if the player is using Blink",
+    nukerGDescription: "Check if the player is destroying the block in an unusual angle",
+    scaffoldKDescription: "Check if the player is placing the block in an unusual angle",
   },
   "zh-tw": {
     theAddonWasAlreadyStart: "插件已經開啟",

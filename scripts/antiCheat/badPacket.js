@@ -55,11 +55,4 @@ export const badPacket = (player) => {
 
     player.lastBadPacketB = yDiff
   }
-
-  if (setting.default.data.antiCheat.badPacketC.state) {
-    if (player.location.y < player.dimension.heightRange.min) {
-      Hutao.Player.checking(player, `BadPacket`, `C`)
-      Hutao.Player.returnLastLocation(player)
-    }
-  }
 }

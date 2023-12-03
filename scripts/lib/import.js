@@ -5,6 +5,7 @@ import { Scoreboard } from "./Scoreboard";
 import { SetTickTimeOut } from "./SetTickTimeOut";
 import { Tools } from "./Tools";
 import { World } from "./World";
+import { WorldEdit } from "./WorldEdit";
 
 export class Hutao {
   static Scoreboard(scoreboard) {
@@ -16,6 +17,7 @@ export class Hutao {
   static Item = Item
   static World = World
   static Database = Database
+  static WorldEdit = WorldEdit
 
   static SetTickTimeOut(
     run,

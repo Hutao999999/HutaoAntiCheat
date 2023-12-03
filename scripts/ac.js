@@ -254,6 +254,11 @@ export class AC {
 
             if (damagingEntity.killauraAAmount > 2) {
               Hutao.Player.checking(damagingEntity, `Killaura`, `A`)
+
+              damagingEntity.addEffect("weakness", 40, {
+                amplifier: 255,
+                showParticles: false
+              })
             }
           }
 
@@ -274,6 +279,11 @@ export class AC {
               ) > 2
             ) {
               Hutao.Player.checking(damagingEntity, `Killaura`, `B`)
+
+              damagingEntity.addEffect("weakness", 40, {
+                amplifier: 255,
+                showParticles: false
+              })
             }
           }
 
@@ -283,36 +293,66 @@ export class AC {
               damagingEntity.hasTag("hutao:has_container_open")
             ) {
               Hutao.Player.checking(damagingEntity, `Killaura`, `C`)
+
+              damagingEntity.addEffect("weakness", 40, {
+                amplifier: 255,
+                showParticles: false
+              })
             }
           }
 
           if (setting.default.data.antiCheat.killauraD.state) {
             if (damagingEntity.isSleeping) {
               Hutao.Player.checking(damagingEntity, `Killaura`, `D`)
+
+              damagingEntity.addEffect("weakness", 40, {
+                amplifier: 255,
+                showParticles: false
+              })
             }
           }
 
           if (setting.default.data.antiCheat.killauraE.state) {
-            if (Date.now() - damagingEntity.lastPlaceBlock < 100) {
+            if (Date.now() - damagingEntity.lastPlaceBlock < 50) {
               Hutao.Player.checking(damagingEntity, `Killaura`, `E`)
+
+              damagingEntity.addEffect("weakness", 40, {
+                amplifier: 255,
+                showParticles: false
+              })
             }
           }
 
           if (setting.default.data.antiCheat.killauraF.state) {
-            if (Date.now() - damagingEntity.lastBrokeBlock < 100) {
+            if (Date.now() - damagingEntity.lastBrokeBlock < 50) {
               Hutao.Player.checking(damagingEntity, `Killaura`, `F`)
+
+              damagingEntity.addEffect("weakness", 40, {
+                amplifier: 255,
+                showParticles: false
+              })
             }
           }
 
           if (setting.default.data.antiCheat.killauraG.state) {
-            if (Date.now() - damagingEntity.lastItemUse < 100) {
+            if (Date.now() - damagingEntity.lastItemUse < 50) {
               Hutao.Player.checking(damagingEntity, `Killaura`, `G`)
+
+              damagingEntity.addEffect("weakness", 40, {
+                amplifier: 255,
+                showParticles: false
+              })
             }
           }
 
           if (setting.default.data.antiCheat.killauraH.state) {
             if (damagingEntity.hasTag("hutao:right")) {
               Hutao.Player.checking(damagingEntity, `Killaura`, `H`)
+
+              damagingEntity.addEffect("weakness", 40, {
+                amplifier: 255,
+                showParticles: false
+              })
             }
           }
 
@@ -327,6 +367,11 @@ export class AC {
 
             if (distance > diffYRotation) {
               Hutao.Player.checking(player, `Killaura`, `I`)
+
+              damagingEntity.addEffect("weakness", 40, {
+                amplifier: 255,
+                showParticles: false
+              })
             }
           }
 
@@ -345,6 +390,11 @@ export class AC {
 
               Minecraft.system.run(() => {
                 Hutao.Player.checking(damagingEntity, `Reach`, `A`)
+
+                damagingEntity.addEffect("weakness", 40, {
+                  amplifier: 255,
+                  showParticles: false
+                })
               })
             }
           }
@@ -368,11 +418,14 @@ export class AC {
         }
       }
 
+      console.warn(item.typeId)
+
       if (
         item.typeId.endsWith("helmet") ||
         item.typeId.endsWith("chestplate") ||
         item.typeId.endsWith("leggings") ||
-        item.typeId.endsWith("boots")
+        item.typeId.endsWith("boots") ||
+        item.typeId.endsWith("elytra")
       ) {
         player.autoArmorChecking = Date.now()
       }
@@ -548,7 +601,7 @@ export class AC {
         }
 
         if (setting.default.data.antiCheat.nukerF.state) {
-          if (Date.now() - player.autoArmorB < 100) {
+          if (Date.now() - player.autoArmorB < 50) {
             ev.cancel = true
 
             Minecraft.system.run(() => {
@@ -586,6 +639,26 @@ export class AC {
             Minecraft.system.run(() => {
               Hutao.Player.checking(player, `Reach`, `C`)
             })
+          }
+        }
+
+        if (setting.default.data.antiCheat.nukerG.state) {
+          let angle = Math.atan2(
+            block.location.z - player.getHeadLocation().z,
+            block.location.x - player.getHeadLocation().x
+          ) * 180 / Math.PI - player.getRotation().y - 90
+
+          angle += (angle <= -180 ? 360 : 0)
+          angle = Math.abs(angle)
+
+          if (
+            angle > 95 &&
+            Math.sqrt(
+              (player.getHeadLocation().x - block.location.x) ** 2 +
+              (player.getHeadLocation().z - block.location.z) ** 2
+            ) > 3
+          ) {
+            Hutao.Player.checking(player, `Nuker`, `G`)
           }
         }
       }
@@ -652,7 +725,7 @@ export class AC {
         }
 
         if (setting.default.data.antiCheat.scaffoldE.state) {
-          if (Date.now() - player.lastHitEntity < 100) {
+          if (Date.now() - player.lastHitEntity < 50) {
             ev.cancel = true
 
             Minecraft.system.run(() => {
@@ -662,7 +735,7 @@ export class AC {
         }
 
         if (setting.default.data.antiCheat.scaffoldF.state) {
-          if (Date.now() - player.lastHitBlock < 100) {
+          if (Date.now() - player.lastHitBlock < 50) {
             ev.cancel = true
 
             Minecraft.system.run(() => {
@@ -674,14 +747,17 @@ export class AC {
         if (setting.default.data.antiCheat.scaffoldG.state) {
           if (!player.isFlying) {
             if (player.getRotation().x == 60) {
-              player.scaffoldGChecking ??= 0
-              player.scaffoldGChecking += 1
+              ev.cancel = true
+
+              Minecraft.system.run(() => {
+                Hutao.Player.checking(player, `Scaffold`, `G`)
+              })
             }
           }
         }
 
         if (setting.default.data.antiCheat.scaffoldH.state) {
-          if (Date.now() - player.autoArmorB < 100) {
+          if (Date.now() - player.autoArmorB < 50) {
             ev.cancel = true
 
             Minecraft.system.run(() => {
@@ -739,6 +815,26 @@ export class AC {
                 })
               }
             }
+          }
+        }
+
+        if (setting.default.data.antiCheat.scaffoldK.state) {
+          let angle = Math.atan2(
+            block.location.z - player.getHeadLocation().z,
+            block.location.x - player.getHeadLocation().x
+          ) * 180 / Math.PI - player.getRotation().y - 90
+
+          angle += (angle <= -180 ? 360 : 0)
+          angle = Math.abs(angle)
+
+          if (
+            angle > 95 &&
+            Math.sqrt(
+              (player.getHeadLocation().x - block.location.x) ** 2 +
+              (player.getHeadLocation().z - block.location.z) ** 2
+            ) > 3
+          ) {
+            Hutao.Player.checking(player, `Scaffold`, `K`)
           }
         }
       }
@@ -813,7 +909,7 @@ export class AC {
         if (setting.default.data.antiCheat.fastThrowA.state) {
           if (throwable.includes(item.typeId)) {
             if (player.lastThrow) {
-              if (Date.now() - player.lastThrow < 100) {
+              if (Date.now() - player.lastThrow < 50) {
                 Hutao.Player.checking(player, `FastThrow`, `A`)
                 ev.cancel = true
               }
@@ -949,7 +1045,6 @@ const resetValuable = (player) => {
   player.flag["autoTotemG"] ??= 0
   player.flag["badPacketA"] ??= 0
   player.flag["badPacketB"] ??= 0
-  player.flag["badPacketC"] ??= 0
   player.flag["blinkA"] ??= 0
   player.flag["crasherA"] ??= 0
   player.flag["crasherB"] ??= 0
@@ -995,6 +1090,7 @@ const resetValuable = (player) => {
   player.flag["nukerD"] ??= 0
   player.flag["nukerE"] ??= 0
   player.flag["nukerF"] ??= 0
+  player.flag["nukerG"] ??= 0
   player.flag["reachA"] ??= 0
   player.flag["reachB"] ??= 0
   player.flag["reachC"] ??= 0
@@ -1009,6 +1105,7 @@ const resetValuable = (player) => {
   player.flag["scaffoldH"] ??= 0
   player.flag["scaffoldI"] ??= 0
   player.flag["scaffoldJ"] ??= 0
+  player.flag["scaffoldK"] ??= 0
   player.flag["spammerA"] ??= 0
   player.flag["spammerB"] ??= 0
   player.flag["spammerC"] ??= 0
@@ -1042,7 +1139,8 @@ const resetValuable = (player) => {
   player.jumpBoost ??= 0
   player.nukerABreak = 0
   player.killauraAAmount = 0
-  player.elytraSpeed = Date.now() - player.elytra < 1000 ? 1.8 : 0
+  player.nukerBBreak = 0
+  player.elytraSpeed = Date.now() - player.elytra < 1000 ? 1.2 : 0
   player.ridingSpeed = Date.now() - player.riding < 1000 ? 4 : 0
   player.tridentSpeed = Date.now() - player.trident < 7000 ? 5 : 0
   player.flySpeed = Date.now() - player.fly < 2000 ? 1.4 : 0

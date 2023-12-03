@@ -23,6 +23,10 @@ export class Player {
     return player
   }
 
+  static setGamemode(player, gamemode) {
+    player.runCommand(`gamemode ${gamemode} @s`)
+  }
+
   static getPing(player) {
     return player.secondPing - player.ping
   }
