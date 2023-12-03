@@ -851,7 +851,6 @@ export const languages = {
     banItem: "Ban Item",
     kickItem: "Kick Item",
     tempkickItem: "Tempkick Item",
-
     refresh: "Refresh",
     blinkADescription: "Check if the player is using Blink",
     nukerGDescription: "Check if the player is destroying the block in an unusual angle",
@@ -1038,7 +1037,11 @@ export const languages = {
     itemList: "物品列表",
     banItem: "封鎖物品",
     kickItem: "踢出物品",
-    tempkickItem: "強制踢出物品"
+    tempkickItem: "強制踢出物品",
+    refresh: "刷新",
+    blinkADescription: "檢測玩家是否使用 Blink",
+    nukerGDescription: "檢測玩家是否使用異常角度破壞方塊",
+    scaffoldKDescription: "檢測玩家是否使用異常角度放置方塊",
   },
   "zh-ch": {
     theAddonWasAlreadyStart: "插件已经开启",
@@ -1221,7 +1224,11 @@ export const languages = {
     itemList: "物品列表",
     banItem: "封锁物品",
     kickItem: "踢出物品",
-    tempkickItem: "强制踢出物品"
+    tempkickItem: "强制踢出物品",
+    refresh: "刷新",
+    blinkADescription: "检测玩家是否使用 Blink",
+    nukerGDescription: "检测玩家是否使用异常角度破坏方块",
+    scaffoldKDescription: "检测玩家是否使用异常角度放置方块",
   }
 }
 
