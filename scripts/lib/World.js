@@ -254,4 +254,9 @@ export class World {
     this.log(`§l§c▶ §r§7${message}`, player)
     player.playSound(`note.bass`)
   }
+
+  static runCommand(player, message) {
+    this.log(`§l§d▶ §r§7${message}`, player)
+    player.playSound(`note.pling`)
+  }
 }

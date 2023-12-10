@@ -2641,7 +2641,7 @@ export class AntiCheat {
     const form = new UI.ActionFormData()
       .title(Hutao.Player.getLanguage(player).adminMenuTitle)
       .body([
-        `§e${Hutao.Player.getLanguage(player).project} §r§7 > §6${dealAntiCheat[type]}`,
+        `§e${Hutao.Player.getLanguage(player).project} §r§7▶ §6${dealAntiCheat[type]}`,
         Hutao.Player.getLanguage(player)[`${type}Description`],
         ``,
         ``
@@ -2752,7 +2752,7 @@ export class AntiCheat {
       } else if (flag) {
         new UI.ModalFormData()
           .title(Hutao.Player.getLanguage(player).adminMenuTitle)
-          .textField(Hutao.Player.getLanguage(player).pleaseEnterTheLimitOfTheFlags, "<Int>", String(setting.default.data.antiCheat[type].flags))
+          .textField(Hutao.Player.getLanguage(player).pleaseEnterTheLimitOfTheFlags, "<Number>", String(setting.default.data.antiCheat[type].flags))
           .show(player)
           .then(res => {
             if (res.canceled) return this[type](player)
@@ -2798,7 +2798,7 @@ export class AntiCheat {
       if (flag) {
         new UI.ModalFormData()
           .title(Hutao.Player.getLanguage(player).adminMenuTitle)
-          .textField(Hutao.Player.getLanguage(player).pleaseEnterTheLimitOfTheFlags, "<Int>", String(setting.default.data.antiCheat[type].flags))
+          .textField(Hutao.Player.getLanguage(player).pleaseEnterTheLimitOfTheFlags, "<Number>", String(setting.default.data.antiCheat[type].flags))
           .show(player)
           .then(res => {
             if (res.canceled) return this[type](player)

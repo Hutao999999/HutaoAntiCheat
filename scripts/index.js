@@ -6,19 +6,6 @@ import { configCache } from "./configCache"
 
 const ms = Date.now()
 
-Minecraft.world.afterEvents.dataDrivenEntityTriggerEvent.subscribe(ev => {
-  const player = ev.entity
-  const id = ev.id
-
-  if (player.typeId == "minecraft:player") {
-    if (id == "hutao:start") {
-      startAC(player)
-    } else if (id == "hutao:reset") {
-      resetAC(player)
-    }
-  }
-})
-
 const startAC = (player) => {
   if (Hutao.Database.has()) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).theAddonWasAlreadyStart)
 
@@ -46,18 +33,38 @@ const startAC = (player) => {
   Hutao.Database.set("db", configData)
 }
 
-const resetAC = (player) => {
-  if (!Hutao.Database.has()) return Hutao.World.wrong(player, `The addon is not started`)
-  if (Hutao.Database.get("db").data.permission.owner != player.id) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).youAreNotTheOwner)
-
-  Hutao.World.success(player, Hutao.Player.getLanguage(player).resetSuccessfully)
-  Minecraft.world.databaseDelete = true
-  Hutao.Scoreboard(setting.database).removeObjective()
-}
-
 Hutao.SetTickTimeOut(() => {
   new AC().start(ms)
 }, 5, 1, false).on()
+
+const interval = Minecraft.system.runInterval(() => {
+  try {
+    const scoreboard = Minecraft.world.scoreboard.getObjective("hutao:start")
+
+    if (Hutao.Database.has()) {
+      try {
+        Minecraft.world.scoreboard.removeObjective("hutao:start")
+        Minecraft.system.clearRun(interval)
+      } catch { }
+
+      return
+    }
+
+    if (scoreboard) {
+      for (const player of Minecraft.world.getPlayers()) {
+        try {
+          if (scoreboard.getScore(player)) {
+            startAC(player)
+            break
+          }
+        } catch { }
+      }
+
+      Minecraft.world.scoreboard.removeObjective("hutao:start")
+      Minecraft.system.clearRun(interval)
+    }
+  } catch (err) { console.warn(err, err.stack) }
+})
 
 Minecraft.world.afterEvents.chatSend.subscribe(ev => {
   const player = ev.sender

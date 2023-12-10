@@ -418,8 +418,6 @@ export class AC {
         }
       }
 
-      console.warn(item.typeId)
-
       if (
         item.typeId.endsWith("helmet") ||
         item.typeId.endsWith("chestplate") ||
@@ -473,18 +471,20 @@ export class AC {
     const afterEventsExplosion = Minecraft.world.afterEvents.explosion.subscribe(ev => {
       const source = ev.source
 
-      for (const player of Minecraft.world.getPlayers()) {
-        if (
-          Math.sqrt(
-            Math.floor(player.location.x - source.location.x) ** 2 +
-            Math.floor(player.location.y - source.location.y) ** 2 +
-            Math.floor(player.location.z - source.location.z) ** 2
-          ) < 15 &&
-          player.dimension.id == source.dimension.id
-        ) {
-          player.gotExplosion = Date.now()
+      try {
+        for (const player of Minecraft.world.getPlayers()) {
+          if (
+            Math.sqrt(
+              Math.floor(player.location.x - source.location.x) ** 2 +
+              Math.floor(player.location.y - source.location.y) ** 2 +
+              Math.floor(player.location.z - source.location.z) ** 2
+            ) < 15 &&
+            player.dimension.id == source.dimension.id
+          ) {
+            player.gotExplosion = Date.now()
+          }
         }
-      }
+      } catch { }
     })
 
     const afterEventsEntityHitBlock = Minecraft.world.afterEvents.entityHitBlock.subscribe(ev => {
@@ -651,14 +651,16 @@ export class AC {
           angle += (angle <= -180 ? 360 : 0)
           angle = Math.abs(angle)
 
-          if (
-            angle > 95 &&
-            Math.sqrt(
-              (player.getHeadLocation().x - block.location.x) ** 2 +
-              (player.getHeadLocation().z - block.location.z) ** 2
-            ) > 3
-          ) {
-            Hutao.Player.checking(player, `Nuker`, `G`)
+          if (Math.abs(player.getHeadLocation().y - block.location.y) < 3) {
+            if (
+              angle > 95 &&
+              Math.sqrt(
+                (player.getHeadLocation().x - block.location.x) ** 2 +
+                (player.getHeadLocation().z - block.location.z) ** 2
+              ) > 3
+            ) {
+              Hutao.Player.checking(player, `Nuker`, `G`)
+            }
           }
         }
       }
@@ -803,16 +805,18 @@ export class AC {
 
             direction += (direction <= -180 ? 360 : 0)
 
-            if (distance > 1.2) {
-              if (
-                direction <= -135 ||
-                direction >= 135
-              ) {
-                ev.cancel = true
+            if (Math.abs(player.getHeadLocation().y - block.location.y) < 3) {
+              if (distance > 1.2) {
+                if (
+                  direction <= -135 ||
+                  direction >= 135
+                ) {
+                  ev.cancel = true
 
-                Minecraft.system.run(() => {
-                  Hutao.Player.checking(player, `Scaffold`, `J`)
-                })
+                  Minecraft.system.run(() => {
+                    Hutao.Player.checking(player, `Scaffold`, `J`)
+                  })
+                }
               }
             }
           }
@@ -957,17 +961,6 @@ export class AC {
       }
     })
 
-    const afterEventsDataDrivenEntityTriggerEvent = Minecraft.world.afterEvents.dataDrivenEntityTriggerEvent.subscribe(ev => {
-      const player = ev.entity
-      const id = ev.id
-
-      if (player.typeId == "minecraft:player") {
-        if (id == "hutao:ping") {
-          player.secondPing = Date.now()
-        }
-      }
-    })
-
     const runInterval = Minecraft.system.runInterval(() => {
       if ((Minecraft.system.currentTick - start) % 2 == 0) {
         const config = Hutao.Database.get("db")
@@ -997,11 +990,29 @@ export class AC {
           player.onScreenDisplay.setActionBar(`Ping: ${Hutao.Player.getPing(player)}`)
         }
 
-        player.triggerEvent("hutao:ping")
         player.ping = Date.now()
+        player.triggerEvent("hutao:ping")
 
         resetValuable(player)
       }
+
+      try {
+        const scoreboard = Minecraft.world.scoreboard.getObjective("hutao:reset")
+
+        if (scoreboard) {
+          for (const player of Minecraft.world.getPlayers()) {
+            try {
+              if (scoreboard.getScore(player)) {
+                resetAC(player)
+
+                break
+              }
+            } catch { }
+          }
+
+          Minecraft.world.scoreboard.removeObjective("hutao:reset")
+        }
+      } catch { }
     })
 
     const msDelay = Date.now() - ms
@@ -1146,7 +1157,6 @@ const resetValuable = (player) => {
   player.flySpeed = Date.now() - player.fly < 2000 ? 1.4 : 0
   player.speed = (player.getEffect("speed")?.amplifier ?? 0) * 0.06
   player.permission = Hutao.Player.getPermission(player)
-  player.permission = "member"
   player.lastAction = player.lastAction2
   player.lastAction2 = player.lastAction3
 
@@ -1433,6 +1443,16 @@ const checkBlock = (player, block) => {
   } else {
     return false
   }
+}
+
+const resetAC = (player) => {
+  if (!Hutao.Database.has()) return Hutao.World.wrong(player, `The addon is not started`)
+  if (Hutao.Database.get("db").data.permission.owner != player.id) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).youAreNotTheOwner)
+
+  Hutao.World.success(player, Hutao.Player.getLanguage(player).resetSuccessfully)
+  Minecraft.world.databaseDelete = true
+  Hutao.Scoreboard(setting.database).removeObjective()
+  Minecraft.world.scoreboard.removeObjective("hutao:reset")
 }
 
 const throwable = [

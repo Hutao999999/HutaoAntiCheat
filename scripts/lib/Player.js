@@ -1,6 +1,9 @@
 import * as Minecraft from "@minecraft/server"
 import * as setting from "../config"
 import { World } from "./World"
+import { en } from "../languages/en"
+import { zhTw } from "../languages/zh-tw"
+import { zhCh } from "../languages/zh-ch"
 
 export class Player {
   static changePlayerNameTag(player) {
@@ -33,6 +36,10 @@ export class Player {
 
   static getHandItem(player) {
     return player.getComponent("inventory").container.getItem(player.selectedSlot)
+  }
+
+  static isBuilder(player) {
+    return setting.default.data.permission.builder.includes(player.id)
   }
 
   static isOwner(player) {
@@ -93,7 +100,9 @@ export class Player {
   }
 
   static getLanguage(player) {
-    return setting.languages[setting.default.data.players[player.id]?.language ?? "en"]
+    if (setting.default.data.players[player.id].language == "en") return en
+    if (setting.default.data.players[player.id].language == "zh-tw") return zhTw
+    if (setting.default.data.players[player.id].language == "zh-ch") return zhCh
   }
 
   static getVelocity(
