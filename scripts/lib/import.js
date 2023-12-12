@@ -1,6 +1,7 @@
 import { Database } from "./Database";
 import { Item } from "./Item";
 import { Player } from "./Player";
+import { Punishment } from "./Punishment";
 import { Scoreboard } from "./Scoreboard";
 import { SetTickTimeOut } from "./SetTickTimeOut";
 import { Tools } from "./Tools";
@@ -18,6 +19,7 @@ export class Hutao {
   static World = World
   static Database = Database
   static WorldEdit = WorldEdit
+  static Punishment = Punishment
 
   static SetTickTimeOut(
     run,

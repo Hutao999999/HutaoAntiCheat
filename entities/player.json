@@ -264,9 +264,6 @@
       }
     },
     "events": {
-      "hutao:start": {},
-      "hutao:reset": {},
-      "hutao:ping": {},
       "minecraft:has_elytra": {
         "run_command": {
           "target": "self",

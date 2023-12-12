@@ -17,21 +17,7 @@ export default {
     },
     commands: {
       state: true,
-      normalPrefix: "!",
-      commands: {
-        setting: {
-          state: true,
-          permission: "all"
-        },
-        language: {
-          state: true,
-          permission: "all"
-        },
-        antiCheat: {
-          state: true,
-          permission: "admin"
-        }
-      }
+      normalPrefix: "!"
     },
     deadMessage: {
       state: true,

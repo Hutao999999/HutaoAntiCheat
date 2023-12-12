@@ -18,12 +18,12 @@ export default {
 
       if (Hutao.Player.isAdmin(player)) {
         Hutao.World.showHelp(player,
-          [`${setting.default.data.commands.normalPrefix}setting §eadmin`, Hutao.Player.getLanguage(player).commandAdminMenuSetting],
-          [`${setting.default.data.commands.normalPrefix}setting §eplayer`, Hutao.Player.getLanguage(player).commandPlayerMenuSetting]
+          [`${setting.default.data.commands.normalPrefix}setting §dadmin`, Hutao.Player.getLanguage(player).commandAdminMenuSetting],
+          [`${setting.default.data.commands.normalPrefix}setting §aplayer`, Hutao.Player.getLanguage(player).commandPlayerMenuSetting]
         )
       } else {
         Hutao.World.showHelp(player,
-          [`${setting.default.data.commands.normalPrefix}setting §eplayer`, Hutao.Player.getLanguage(player).commandPlayerMenuSetting]
+          [`${setting.default.data.commands.normalPrefix}setting §aplayer`, Hutao.Player.getLanguage(player).commandPlayerMenuSetting]
         )
       }
     } else {

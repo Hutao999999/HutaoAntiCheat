@@ -980,18 +980,35 @@ export class AC {
 
           config.data.players[player.id] = {
             language: "en",
-            name: player.name
+            name: player.name,
+            mute: false,
+            freeze: false,
+            freezeLocation: {}
           }
 
           Hutao.Database.set("db", config)
         }
 
-        if (Minecraft.system.currentTick % 20 == 0) {
-          player.onScreenDisplay.setActionBar(`Ping: ${Hutao.Player.getPing(player)}`)
+        if (setting.default.data.players[player.id].freeze) {
+          if (
+            Math.abs(setting.default.data.players[player.id].freezeLocation.x - player.location.x) > 0.001 ||
+            Math.abs(setting.default.data.players[player.id].freezeLocation.y - player.location.y) > 0.001 ||
+            Math.abs(setting.default.data.players[player.id].freezeLocation.z - player.location.z) > 0.001 ||
+            setting.default.data.players[player.id].freezeLocation.dimension != player.dimension.id
+          ) {
+            player.teleport({
+              x: setting.default.data.players[player.id].freezeLocation.x,
+              y: setting.default.data.players[player.id].freezeLocation.y,
+              z: setting.default.data.players[player.id].freezeLocation.z
+            }, {
+              dimension: Minecraft.world.getDimension(setting.default.data.players[player.id].freezeLocation.dimension),
+              rotation: {
+                x: setting.default.data.players[player.id].freezeLocation.rx,
+                y: setting.default.data.players[player.id].freezeLocation.ry
+              }
+            })
+          }
         }
-
-        player.ping = Date.now()
-        player.triggerEvent("hutao:ping")
 
         resetValuable(player)
       }

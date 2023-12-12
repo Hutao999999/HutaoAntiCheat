@@ -39,7 +39,7 @@ export class AntiCheat {
       .show(player)
       .then(res => {
         if (res.canceled) {
-          if (res.cancelationReason == "UserBust") return this.open(player)
+          if (res.cancelationReason == "UserBusy") return this.open(player)
         }
 
         if (res.selection == 0) this.entityList(player)

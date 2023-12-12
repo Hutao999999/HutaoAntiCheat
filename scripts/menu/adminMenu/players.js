@@ -1,5 +1,6 @@
 import * as Minecraft from "@minecraft/server"
 import * as UI from "@minecraft/server-ui"
+import * as setting from "../../config"
 import { Hutao } from "../../lib/import"
 import { AdminMenu } from "../adminMenu"
 
@@ -66,6 +67,7 @@ export class Players {
         ``,
         ...bodies
       ].join("\n§r"))
+      .button(`§1${Hutao.Player.getLanguage(player).abilities}`, `textures/ui/chat_send`)
       .button(`§1${Hutao.Player.getLanguage(player).behaviors}`, "textures/ui/sidebar_icons/emotes")
       .button(`§1${Hutao.Player.getLanguage(player).inventory}`, `textures/ui/icon_recipe_item`)
       .button(`§1${Hutao.Player.getLanguage(player).permission}`, `textures/ui/permissions_op_crown`)
@@ -77,11 +79,102 @@ export class Players {
           if (res.cancelationReason == "UserBusy") return this.playerSetting(player)
         }
 
-        if (res.selection == 0) this.behaviors(player, selectedPlayer)
-        if (res.selection == 1) this.inventory(player, selectedPlayer)
-        if (res.selection == 2) this.permission(player, selectedPlayer)
-        if (res.selection == 3) this.teleport(player, selectedPlayer)
-        if (res.selection == 4) this.open(player)
+        if (res.selection == 0) this.ability(player, selectedPlayer)
+        if (res.selection == 1) this.behaviors(player, selectedPlayer)
+        if (res.selection == 2) this.inventory(player, selectedPlayer)
+        if (res.selection == 3) this.permission(player, selectedPlayer)
+        if (res.selection == 4) this.teleport(player, selectedPlayer)
+        if (res.selection == 5) this.open(player)
+      })
+  }
+
+  ability(player, selectedPlayer) {
+    // notPlayer
+
+    new UI.ActionFormData()
+      .title(Hutao.Player.getLanguage(player).adminMenuTitle)
+      .button(`§1${Hutao.Player.getLanguage(player).freeze}\n${setting.default.data.players[selectedPlayer.id].freeze ? `§a${Hutao.Player.getLanguage(player).true}` : `§c${Hutao.Player.getLanguage(player).false}`}`, `textures/blocks/ice`)
+      .button(`§1${Hutao.Player.getLanguage(player).mute}\n${setting.default.data.players[selectedPlayer.id].mute ? `§a${Hutao.Player.getLanguage(player).true}` : `§c${Hutao.Player.getLanguage(player).false}`}`, `textures/ui/chat_send`)
+      .button(`§c${Hutao.Player.getLanguage(player).back}`, `textures/ui/arrow_dark_left_stretch`)
+      .show(player)
+      .then(res => {
+        if (res.canceled) {
+          if (res.cancelationReason == "UserBusy") return this.ability(player, selectedPlayer)
+        }
+
+        if (res.selection == 0) {
+          // notPlayer
+
+          new UI.ModalFormData()
+            .title(Hutao.Player.getLanguage(player).adminMenuTitle)
+            .toggle(Hutao.Player.getLanguage(player).freeze, setting.default.data.players[selectedPlayer.id].freeze)
+            .show(player)
+            .then(res => {
+              if (res.canceled) return this.ability(player, selectedPlayer)
+
+              // notPlayer
+
+              let config = Hutao.Database.get("db")
+
+              if (res.formValues[0]) {
+                config.data.players[selectedPlayer.id].freeze = true
+                config.data.players[selectedPlayer.id].freezeLocation = {
+                  x: selectedPlayer.location.x,
+                  y: selectedPlayer.location.y,
+                  z: selectedPlayer.location.z,
+                  rx: selectedPlayer.getRotation().x,
+                  ry: selectedPlayer.getRotation().y,
+                  dimension: selectedPlayer.dimension.id
+                }
+
+                Hutao.World.runCommand(selectedPlayer, Hutao.Player.getLanguage(selectedPlayer).youAreFreeze.replaceAll("{player}", player.name))
+              } else {
+                config.data.players[selectedPlayer.id].freeze = false
+                config.data.players[selectedPlayer.id].freezeLocation = {}
+                Hutao.World.runCommand(selectedPlayer, Hutao.Player.getLanguage(selectedPlayer).youAreUnfreeze.replaceAll("{player}", player.name))
+              }
+
+              Hutao.Database.set("db", config)
+              Hutao.World.success(player, Hutao.Player.getLanguage(player).changedSuccessfully)
+
+              Hutao.SetTickTimeOut(() => {
+                this.ability(player, selectedPlayer)
+              }, 5, 1, false).on()
+            })
+        }
+
+        if (res.selection == 1) {
+          // notPlayer
+
+          new UI.ModalFormData()
+            .title(Hutao.Player.getLanguage(player).adminMenuTitle)
+            .toggle(Hutao.Player.getLanguage(player).mute, setting.default.data.players[selectedPlayer.id].mute)
+            .show(player)
+            .then(res => {
+              if (res.canceled) return this.ability(player, selectedPlayer)
+
+              // notPlayer
+
+              let config = Hutao.Database.get("db")
+
+              if (res.formValues[0]) {
+                config.data.players[selectedPlayer.id].mute = true
+                Hutao.World.runCommand(selectedPlayer, Hutao.Player.getLanguage(selectedPlayer).youAreMute.replaceAll("{player}", player.name))
+              } else {
+                config.data.players[selectedPlayer.id].mute = false
+                Hutao.World.runCommand(selectedPlayer, Hutao.Player.getLanguage(selectedPlayer).youAreUnmute.replaceAll("{player}", player.name))
+              }
+
+              Hutao.Database.set("db", config)
+              Hutao.World.success(player, Hutao.Player.getLanguage(player).changedSuccessfully)
+
+              Hutao.SetTickTimeOut(() => {
+                this.ability(player, selectedPlayer)
+              }, 5, 1, false).on()
+            })
+        }
+
+        if (res.selection == 2) this.playerSetting(player, selectedPlayer)
       })
   }
 
@@ -90,7 +183,7 @@ export class Players {
 
     new UI.ActionFormData()
       .title(Hutao.Player.getLanguage(player).adminMenuTitle)
-      .button(`§1${Hutao.Player.getLanguage(player).teleportToHere}`, `textuers/items/ender_pearl`)
+      .button(`§1${Hutao.Player.getLanguage(player).teleportToHere}`, `textures/items/ender_pearl`)
       .button(`§1${Hutao.Player.getLanguage(player).teleportToThere}`, `textures/items/ender_eye`)
       .button(`§c${Hutao.Player.getLanguage(player).back}`, `textures/ui/arrow_dark_left_stretch`)
       .show(player)
@@ -531,6 +624,8 @@ export class Players {
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
                                       }, 20, 1, false).on()
+
+                                      return
                                     }
 
                                     if (validNumber(res.formValues[1]).condition) {
@@ -539,14 +634,18 @@ export class Players {
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
                                       }, 20, 1, false).on()
+
+                                      return
                                     }
 
                                     if (item.enchantment.includes(res.formValues[0].trim())) {
-                                      Hutao.World.wrong(player, Hutao.Player.getLanguage(player).repeatLore)
+                                      Hutao.World.wrong(player, Hutao.Player.getLanguage(player).repeatEnchantment)
 
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
                                       }, 20, 1, false).on()
+
+                                      return
                                     }
 
                                     item.enchantment.push({
@@ -625,6 +724,8 @@ export class Players {
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
                                       }, 20, 1, false).on()
+
+                                      return
                                     }
 
                                     if (validNumber(res.formValues[1]).condition) {
@@ -633,14 +734,18 @@ export class Players {
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
                                       }, 20, 1, false).on()
+
+                                      return
                                     }
 
                                     if (item.enchantment.includes(res.formValues[0].trim())) {
-                                      Hutao.World.wrong(player, Hutao.Player.getLanguage(player).repeatLore)
+                                      Hutao.World.wrong(player, Hutao.Player.getLanguage(player).repeatEnchantment)
 
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
                                       }, 20, 1, false).on()
+
+                                      return
                                     }
 
                                     item.enchantment[response] = {
@@ -709,6 +814,8 @@ export class Players {
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
                                       }, 20, 1, false).on()
+
+                                      return
                                     }
 
                                     if (item.lore.includes(res.formValues[0].trim())) {
@@ -717,6 +824,8 @@ export class Players {
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
                                       }, 20, 1, false).on()
+
+                                      return
                                     }
 
 
@@ -769,6 +878,8 @@ export class Players {
                                         Hutao.SetTickTimeOut(() => {
                                           change(player, selectedPlayer, slot, item)
                                         }, 20, 1, false).on()
+
+                                        return
                                       }
 
                                       if (item.lore.includes(res.formValues[0].trim())) {
@@ -777,6 +888,8 @@ export class Players {
                                         Hutao.SetTickTimeOut(() => {
                                           change(player, selectedPlayer, slot, item)
                                         }, 20, 1, false).on()
+
+                                        return
                                       }
 
                                       item.lore[response] = res.formValues[0].trim()
@@ -903,6 +1016,8 @@ export class Players {
                                         Hutao.SetTickTimeOut(() => {
                                           change(player, selectedPlayer, slot, item)
                                         }, 20, 1, false).on()
+
+                                        return
                                       }
 
                                       if (item.canPlaceOn.includes(res.formValues[0].trim())) {
@@ -911,6 +1026,8 @@ export class Players {
                                         Hutao.SetTickTimeOut(() => {
                                           change(player, selectedPlayer, slot, item)
                                         }, 20, 1, false).on()
+
+                                        return
                                       }
 
                                       item.canPlaceOn[response] = res.formValues[0].trim()
@@ -977,6 +1094,8 @@ export class Players {
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
                                       }, 20, 1, false).on()
+
+                                      return
                                     }
 
                                     if (item.canDestroy.includes(res.formValues[0].trim())) {
@@ -985,6 +1104,8 @@ export class Players {
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
                                       }, 20, 1, false).on()
+
+                                      return
                                     }
 
 
@@ -1037,6 +1158,8 @@ export class Players {
                                         Hutao.SetTickTimeOut(() => {
                                           change(player, selectedPlayer, slot, item)
                                         }, 20, 1, false).on()
+
+                                        return
                                       }
 
                                       if (item.canDestroy.includes(res.formValues[0].trim())) {
@@ -1045,6 +1168,8 @@ export class Players {
                                         Hutao.SetTickTimeOut(() => {
                                           change(player, selectedPlayer, slot, item)
                                         }, 20, 1, false).on()
+
+                                        return
                                       }
 
                                       item.canDestroy[response] = res.formValues[0].trim()
