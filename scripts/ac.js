@@ -42,7 +42,9 @@ export class AC {
     }
 
     const start = Minecraft.system.currentTick
+
     Minecraft.world.startTick = start
+
     let lastTick
     let msTick
 
@@ -224,6 +226,28 @@ export class AC {
             return
           }
         }
+      }
+
+      if (setting.default.data.chatFormat.state) {
+        ev.cancel = true
+
+        const changer = {
+          player: player.name,
+          message: message,
+          status: setting.default.data.chatFormat.format.status[player.permission],
+          location: setting.default.data.chatFormat.format.location.replaceAll("{x}", Math.floor(player.location.x * 100) / 100).replaceAll("{y}", Math.floor(player.location.y * 100) / 100).replaceAll("{z}", Math.floor(player.location.z * 100) / 100),
+          rotation: setting.default.data.chatFormat.format.rotation.replaceAll("{x}", Math.floor(player.getRotation().x * 100) / 100).replaceAll("{y}", Math.floor(player.getRotation().y * 100) / 100)
+        }
+
+        let beSent
+
+        beSent = setting.default.data.chatFormat.structure[player.permission]
+
+        for (const item of Object.entries(changer)) {
+          beSent = beSent.replaceAll(`{${item[0]}}`, item[1])
+        }
+
+        Hutao.World.log(beSent)
       }
     })
 

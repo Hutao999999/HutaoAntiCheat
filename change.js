@@ -1,5 +1,5 @@
-const amount = 11
-const string = "ItemCheck"
+const amount = 1
+const string = "Speed"
 
 let origin = {
   change: {
@@ -14,6 +14,10 @@ let origin = {
 
 const strings = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const result = []
+
+for (let i = 0; i < 1000; i++) {
+  console.log("")
+}
 
 console.clear()
 origin = JSON.parse(JSON.stringify(origin).replaceAll("{change}", string))

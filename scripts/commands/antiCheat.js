@@ -17,6 +17,18 @@ import { fly } from "./antiCheat/fly"
 import { invalidSprint } from "./antiCheat/invalidSprint"
 import { inventoryAction } from "./antiCheat/inventoryAction"
 import { itemCheck } from "./antiCheat/itemCheck"
+import { killaura } from "./antiCheat/killaura"
+import { movement } from "./antiCheat/movement"
+import { nameSpoof } from "./antiCheat/nameSpoof"
+import { noFall } from "./antiCheat/noFall"
+import { noSlowDown } from "./antiCheat/noSlowDown"
+import { nuker } from "./antiCheat/nuker"
+import { reach } from "./antiCheat/reach"
+import { scaffold } from "./antiCheat/scaffold"
+import { spammer } from "./antiCheat/spammer"
+import { speed } from "./antiCheat/speed"
+import { entityList } from "./antiCheat/entityList"
+import { itemList } from "./antiCheat/itemList"
 
 export default {
   name: "antiCheat",
@@ -26,6 +38,8 @@ export default {
       if (command[2]) return Hutao.World.wrongCommand(player, command, 2)
 
       Hutao.World.showHelp(player,
+        [`${setting.default.data.commands.normalPrefix}anti-cheat §dentity-list`, Hutao.Player.getLanguage(player).commandAntiCheatEntityListSetting],
+        [`${setting.default.data.commands.normalPrefix}anti-cheat §ditem-list`, Hutao.Player.getLanguage(player).commandAntiCheatItemListSetting],
         [`${setting.default.data.commands.normalPrefix}anti-cheat §daura`, Hutao.Player.getLanguage(player).commandAntiCheatAuraSetting],
         [`${setting.default.data.commands.normalPrefix}anti-cheat §dauto-armor`, Hutao.Player.getLanguage(player).commandAntiCheatAutoArmorSetting],
         [`${setting.default.data.commands.normalPrefix}anti-cheat §dauto-clicker`, Hutao.Player.getLanguage(player).commandAntiCheatAutoClickerSetting],
@@ -85,6 +99,30 @@ export default {
       inventoryAction(player, command)
     } else if (command[1] == "item-check") {
       itemCheck(player, command)
+    } else if (command[1] == "killaura") {
+      killaura(player, command)
+    } else if (command[1] == "movement") {
+      movement(player, command)
+    } else if (command[1] == "name-spoof") {
+      nameSpoof(player, command)
+    } else if (command[1] == "no-fall") {
+      noFall(player, command)
+    } else if (command[1] == "no-slow-down") {
+      noSlowDown(player, command)
+    } else if (command[1] == "nuker") {
+      nuker(player, command)
+    } else if (command[1] == "reach") {
+      reach(player, command)
+    } else if (command[1] == "scaffold") {
+      scaffold(player, command)
+    } else if (command[1] == "spammer") {
+      spammer(player, command)
+    } else if (command[1] == "speed") {
+      speed(player, command)
+    } else if (command[1] == "entity-list") {
+      entityList(player, command)
+    } else if (command[1] == "item-list") {
+      itemList(player, command)
     } else if (command[1] == "open") {
       if (command[2]) return Hutao.World.wrongCommand(player, command, 2)
 

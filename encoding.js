@@ -1,13 +1,11 @@
-const strings = "/abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-[];'.=,\\{}|:\"<>?`~§¥£"
-
-const split = (message, index) => {
+const split = (message, key) => {
   let replacer = []
   let changer = []
 
   for (let i = 0; i < message.length; i++) {
     changer.push(message[i])
 
-    if ((i + 1) % index == 0) {
+    if ((i + 1) % key == 0) {
       replacer.push(changer.join(""))
       changer = []
     }
@@ -21,26 +19,45 @@ const split = (message, index) => {
   return replacer
 }
 
-const encode = (message, key) => {
-  message = split(
-    message.split("").map(string => String(key * (string.charCodeAt(0) + key) - key)).map(string => `0`.repeat(32 - string.length) + string).join(""),
-    2
-  ).map(string => strings[Number(string)]).join("")
+const strings = "i1ltI|!T[]"
 
-  return message
+const numbers = [2, 3, 7]
+
+const encode = (message) => {
+  message = split(message.split("").map(string => String(string.charCodeAt())).map(string => `0`.repeat(4 - string.length) + string).join(""), 2).map(string => Number(string))
+
+  for (const number of numbers) {
+    for (let i = 0; i < message.length; i++) {
+      message[i] *= number
+    }
+
+    numbers.reverse()
+  }
+
+  message = message.map(string => String(string)).map(string => `0`.repeat(4 - string.length) + string).join("").split("").map(string => strings[string])
+
+  return message.join("")
 }
 
-const decode = (message, key) => {
-  message = split(
-    message.split("").map(string => String(strings.indexOf(string))).map(string => `0`.repeat(2 - string.length) + string).join(""),
-    32
-  ).map(string => String.fromCharCode((Number(string) + key) / key - key)).join("")
+const decode = (message) => {
+  message = split(message.split("").map(string => strings.indexOf(string)).join(""), 4).map(string => Number(string))
 
-  return message
+  numbers.reverse()
+
+  for (const number of numbers) {
+    for (let i = 0; i < message.length; i++) {
+      message[i] /= number
+    }
+
+    numbers.reverse()
+  }
+
+  message = split(message.map(string => String(string)).map(string => `0`.repeat(2 - string.length) + string).join(""), 4).map(string => String.fromCharCode(string))
+
+  return message.join("")
 }
 
-const key = 512
-const message = "隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀隀"
+const message = "I am BlueBoot6336422"
 
-console.log("Encoding String: ", encode(message, key))
-console.log("Decoding String: ", decode(encode(message, key), key))
+console.log(`Encoding String: `, encode(message))
+console.log(`Decode String: `, decode(encode(message)))

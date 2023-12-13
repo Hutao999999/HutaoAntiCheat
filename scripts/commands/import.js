@@ -5,53 +5,40 @@ import languageCommand from "./language"
 import { Hutao } from "../lib/import"
 
 export const command = (player, command) => {
-  if (Object.keys(commands).includes(command[0])) {
-    if (commands[command[0]].permission == "admin") {
-      if (Hutao.Player.isAdmin(player)) {
-        functions[commands[command[0]].name].function(player, command)
-      } else {
-        return Hutao.World.wrongCommand(player, command, 0)
-      }
-    } else {
-      functions[commands[command[0]].name].function(player, command)
+  const commands = {
+    "anti-cheat": {
+      name: "antiCheat",
+      permission: "admin",
+      state: true,
+    },
+    "setting": {
+      name: "setting",
+      permission: "all",
+      state: true
+    },
+    "language": {
+      name: "language",
+      permission: "all",
+      state: true
     }
-  } else {
-    return Hutao.World.wrongCommand(player, command, 0)
   }
 
   if (Object.keys(commands).includes(command[0])) {
-    if (setting.default.data.commands.commands[commands[command[0]]].state) {
-      if (setting.default.data.commands.commands[commands[command[0]]].permission == "admin") {
+    if (commands[command[0]].state) {
+      if (commands[command[0]].permission == "admin") {
         if (Hutao.Player.isAdmin(player)) {
-          functions[commands[command[0]]].function(player, command)
+          functions[commands[command[0]].name].function(player, command)
         } else {
           return Hutao.World.wrongCommand(player, command, 0)
         }
       } else {
-        functions[commands[command[0]]].function(player, command)
+        functions[commands[command[0]].name].function(player, command)
       }
     } else {
       return Hutao.World.wrongCommand(player, command, 0)
     }
-  } else if (command[0] == undefined) {
-
   } else {
     return Hutao.World.wrongCommand(player, command, 0)
-  }
-}
-
-const commands = {
-  "anti-cheat": {
-    name: "antiCheat",
-    permission: "admin"
-  },
-  "setting": {
-    name: "setting",
-    permission: "all"
-  },
-  "language": {
-    name: "language",
-    permission: "all"
   }
 }
 

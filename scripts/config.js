@@ -19,6 +19,25 @@ export default {
       state: true,
       normalPrefix: "!"
     },
+    chatFormat: {
+      state: true,
+      structure: {
+        owner: "{status}§7{player} §r§7▶ §r{message}",
+        admin: "{status}§7{player} §r§7▶ §r{message}",
+        builder: "{status}§7{player} §r§7▶ §r{message}",
+        member: "{status}§7{player} §r§7▶ §r{message}"
+      },
+      format: {
+        status: {
+          owner: "§7[§dOwner§7]§r",
+          admin: "§7[§cAdmin§7]§r",
+          builder: "§7[§6Builder§7]§r",
+          member: "§7[§bMember§7]§r"
+        },
+        location: "§aXYZ§7: §e{x}§7, §e{y}§7, §e{z}",
+        rotation: "§aXY§7: §e{x}§7, §e{y}"
+      }
+    },
     deadMessage: {
       state: true,
       anvil: "§cDeath §7▶ §e{player} §r§cwas squashed by a falling anvil",
