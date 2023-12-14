@@ -36,7 +36,7 @@ export class Players {
   }
 
   playerSetting(player, selectedPlayer) {
-    // notPlayer
+    if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
     const health = selectedPlayer.getComponent("health")
     const spawnpoint = selectedPlayer.getSpawnPoint()
@@ -89,7 +89,7 @@ export class Players {
   }
 
   ability(player, selectedPlayer) {
-    // notPlayer
+    if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
     new UI.ActionFormData()
       .title(Hutao.Player.getLanguage(player).adminMenuTitle)
@@ -103,7 +103,7 @@ export class Players {
         }
 
         if (res.selection == 0) {
-          // notPlayer
+          if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
           new UI.ModalFormData()
             .title(Hutao.Player.getLanguage(player).adminMenuTitle)
@@ -112,7 +112,7 @@ export class Players {
             .then(res => {
               if (res.canceled) return this.ability(player, selectedPlayer)
 
-              // notPlayer
+              if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
               let config = Hutao.Database.get("db")
 
@@ -144,7 +144,7 @@ export class Players {
         }
 
         if (res.selection == 1) {
-          // notPlayer
+          if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
           new UI.ModalFormData()
             .title(Hutao.Player.getLanguage(player).adminMenuTitle)
@@ -153,7 +153,7 @@ export class Players {
             .then(res => {
               if (res.canceled) return this.ability(player, selectedPlayer)
 
-              // notPlayer
+              if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
               let config = Hutao.Database.get("db")
 
@@ -179,7 +179,7 @@ export class Players {
   }
 
   teleport(player, selectedPlayer) {
-    // notPlayer
+    if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
     new UI.ActionFormData()
       .title(Hutao.Player.getLanguage(player).adminMenuTitle)
@@ -193,7 +193,7 @@ export class Players {
         }
 
         if (res.selection == 0) {
-          // notPlayer
+          if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
           selectedPlayer.teleport({
             x: player.location.x,
@@ -216,7 +216,7 @@ export class Players {
         }
 
         if (res.selection == 1) {
-          // notPlayer
+          if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
           player.teleport({
             x: selectedPlayer.location.x,
@@ -243,7 +243,7 @@ export class Players {
   }
 
   inventory(player, selectedPlayer) {
-    // notPlayer
+    if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
     const form = new UI.ActionFormData()
       .title(Hutao.Player.getLanguage(player).adminMenuTitle)
@@ -301,7 +301,7 @@ export class Players {
 
         if ((res.selection - 1) == items.length) {
           const chooseSlot = (player, selectedPlayer) => {
-            // notPlayer
+            if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
             const container = selectedPlayer.getComponent("inventory").container
 
@@ -337,7 +337,7 @@ export class Players {
           }
 
           const chooseType = (player, selectedPlayer, slot) => {
-            // notPlayer
+            if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
             new UI.ActionFormData()
               .title(Hutao.Player.getLanguage(player).adminMenuTitle)
@@ -353,7 +353,7 @@ export class Players {
                 }
 
                 if (res.selection == 0) {
-                  // notPlayer
+                  if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                   const item = player.getComponent("inventory").container.getItem(player.selectedSlot)
                   const container = selectedPlayer.getComponent("inventory").container
@@ -374,7 +374,7 @@ export class Players {
                 }
 
                 if (res.selection == 1) {
-                  // notPlayer
+                  if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                   const item = player.getBlockFromViewDirection().block.permutation.getItemStack()
                   const container = selectedPlayer.getComponent("inventory").container
@@ -395,7 +395,7 @@ export class Players {
                 }
 
                 if (res.selection == 2) {
-                  // notPlayer
+                  if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                   new UI.ModalFormData()
                     .title(Hutao.Player.getLanguage(player).adminMenuTitle)
@@ -405,7 +405,7 @@ export class Players {
                     .then(res => {
                       if (res.canceled) return chooseType(player, selectedPlayer, slot)
 
-                      // notPlayer
+                      if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                       const validString = (string) => {
                         if (string.trim() == "") return {
@@ -447,7 +447,7 @@ export class Players {
                       }
 
                       const endForm = (player, selectedPlayer, slot, item) => {
-                        // notPlayer
+                        if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                         new UI.ActionFormData()
                           .title(Hutao.Player.getLanguage(player).adminMenuTitle)
@@ -477,7 +477,7 @@ export class Players {
                       }
 
                       const set = (player, selectedPlayer, slot, item) => {
-                        // notPlayer
+                        if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                         const currentItem = new Minecraft.ItemStack(item.id, item.amount)
                         const itemEnchant = currentItem.getComponent("enchantments").enchantments
@@ -512,7 +512,7 @@ export class Players {
                       }
 
                       const other = (player, selectedPlayer, slot, item) => {
-                        // notPlayer
+                        if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                         new UI.ModalFormData()
                           .title(Hutao.Player.getLanguage(player).adminMenuTitle)
@@ -531,7 +531,7 @@ export class Players {
                           .then(res => {
                             if (res.canceled) return endForm(player, selectedPlayer, slot, item)
 
-                            // notPlayer
+                            if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                             item.keepOnDeath = res.formValues[0]
                             item.lockMode = [
@@ -547,7 +547,7 @@ export class Players {
                       }
 
                       const enchantment = (player, selectedPlayer, slot, item) => {
-                        // notPlayer
+                        if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                         const form = new UI.ActionFormData()
                           .title(Hutao.Player.getLanguage(player).adminMenuTitle)
@@ -566,7 +566,7 @@ export class Players {
                             if (res.selection == 0) enchantment(player, selectedPlayer, slot, item)
 
                             if ((res.selection - 1) == item.enchantment.length) {
-                              // notPlayer
+                              if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                               const change = (player, selectedPlayer, slot, item) => {
                                 new UI.ModalFormData()
@@ -577,7 +577,7 @@ export class Players {
                                   .then(res => {
                                     if (res.canceled) return enchantment(player, selectedPlayer, slot, item)
 
-                                    // notPlayer
+                                    if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                                     const validString = (string) => {
                                       if (string.trim() == "") return {
@@ -664,7 +664,7 @@ export class Players {
                               res.selection > 0 &&
                               (res.selection - 1) < item.enchantment.length
                             ) {
-                              // notPlayer
+                              if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                               const response = res.selection - 1
 
@@ -677,7 +677,7 @@ export class Players {
                                   .then(res => {
                                     if (res.canceled) return enchantment(player, selectedPlayer, slot, item)
 
-                                    // notPlayer
+                                    if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                                     const validString = (string) => {
                                       if (string.trim() == "") return {
@@ -765,7 +765,7 @@ export class Players {
                       }
 
                       const lore = (player, selectedPlayer, slot, item) => {
-                        // notPlayer
+                        if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                         const form = new UI.ActionFormData()
                           .title(Hutao.Player.getLanguage(player).adminMenuTitle)
@@ -784,7 +784,7 @@ export class Players {
                             if (res.selection == 0) lore(player, selectedPlayer, slot, item)
 
                             if ((res.selection - 1) == item.lore.length) {
-                              // notPlayer
+                              if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                               const change = (player, selectedPlayer, slot, item) => {
                                 new UI.ModalFormData()
@@ -794,7 +794,7 @@ export class Players {
                                   .then(res => {
                                     if (res.canceled) return lore(player, selectedPlayer, slot, item)
 
-                                    // notPlayer
+                                    if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                                     const validString = (string) => {
                                       if (string.trim() == "") return {
@@ -842,7 +842,7 @@ export class Players {
                               res.selection > 0 &&
                               (res.selection - 1) < item.lore.length
                             ) {
-                              // notPlayer
+                              if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                               const response = res.selection - 1
 
@@ -855,7 +855,7 @@ export class Players {
                                   .then(res => {
                                     if (res.canceled) return lore(player, selectedPlayer, slot, item)
 
-                                    // notPlayer
+                                    if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                                     const validString = (string) => {
                                       if (string.trim() == "") return {
@@ -907,7 +907,7 @@ export class Players {
                       }
 
                       const canPlaceOn = (player, selectedPlayer, slot, item) => {
-                        // notPlayer
+                        if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                         const form = new UI.ActionFormData()
                           .title(Hutao.Player.getLanguage(player).adminMenuTitle)
@@ -926,7 +926,7 @@ export class Players {
                             if (res.selection == 0) canPlaceOn(player, selectedPlayer, slot, item)
 
                             if ((res.selection - 1) == item.canPlaceOn.length) {
-                              // notPlayer
+                              if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                               const change = (player, selectedPlayer, slot, item) => {
                                 new UI.ModalFormData()
@@ -936,7 +936,7 @@ export class Players {
                                   .then(res => {
                                     if (res.canceled) return canPlaceOn(player, selectedPlayer, slot, item)
 
-                                    // notPlayer
+                                    if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                                     const validString = (string) => {
                                       if (string.trim() == "") return {
@@ -980,7 +980,7 @@ export class Players {
                               res.selection > 0 &&
                               (res.selection - 1) < item.canPlaceOn.length
                             ) {
-                              // notPlayer
+                              if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                               const response = res.selection - 1
 
@@ -993,7 +993,7 @@ export class Players {
                                   .then(res => {
                                     if (res.canceled) return canPlaceOn(player, selectedPlayer, slot, item)
 
-                                    // notPlayer
+                                    if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                                     const validString = (string) => {
                                       if (string.trim() == "") return {
@@ -1045,7 +1045,7 @@ export class Players {
                       }
 
                       const canDestroy = (player, selectedPlayer, slot, item) => {
-                        // notPlayer
+                        if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                         const form = new UI.ActionFormData()
                           .title(Hutao.Player.getLanguage(player).adminMenuTitle)
@@ -1064,7 +1064,7 @@ export class Players {
                             if (res.selection == 0) canDestroy(player, selectedPlayer, slot, item)
 
                             if ((res.selection - 1) == item.canDestroy.length) {
-                              // notPlayer
+                              if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                               const change = (player, selectedPlayer, slot, item) => {
                                 new UI.ModalFormData()
@@ -1074,7 +1074,7 @@ export class Players {
                                   .then(res => {
                                     if (res.canceled) return canDestroy(player, selectedPlayer, slot, item)
 
-                                    // notPlayer
+                                    if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                                     const validString = (string) => {
                                       if (string.trim() == "") return {
@@ -1122,7 +1122,7 @@ export class Players {
                               res.selection > 0 &&
                               (res.selection - 1) < item.canDestroy.length
                             ) {
-                              // notPlayer
+                              if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                               const response = res.selection - 1
 
@@ -1135,7 +1135,7 @@ export class Players {
                                   .then(res => {
                                     if (res.canceled) return canDestroy(player, selectedPlayer, slot, item)
 
-                                    // notPlayer
+                                    if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                                     const validString = (string) => {
                                       if (string.trim() == "") return {
@@ -1187,7 +1187,7 @@ export class Players {
                       }
 
                       const normalSetting = (player, selectedPlayer, slot, item) => {
-                        // notPlayer
+                        if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                         new UI.ModalFormData()
                           .title(Hutao.Player.getLanguage(player).adminMenuTitle)
@@ -1197,7 +1197,7 @@ export class Players {
                           .then(res => {
                             if (res.canceled) return endForm(player, selectedPlayer, slot, item)
 
-                            // notPlayer
+                            if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
                             if (validString(res.formValues[0]).condition) {
                               Hutao.World.wrong(player, validString(res.formValues[0]).reason)
@@ -1252,7 +1252,7 @@ export class Players {
         }
 
         if ((res.selection - 1) == items.length + 1) {
-          // notPlayer
+          if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
           selectedPlayer.runCommand(`function utils/clearEnderChest`)
 
@@ -1265,7 +1265,7 @@ export class Players {
         }
 
         if ((res.selection - 1) == items.length + 2) {
-          // notPlayer
+          if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
           const container = selectedPlayer.getComponent("inventory").container
           const equipment = selectedPlayer.getComponent("equippable")
@@ -1304,8 +1304,8 @@ export class Players {
   }
 
   items(player, selectedPlayer, selectedItem) {
-    // notPlayer
-    // notItem
+    if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
+    if (notItem(selectedPlayer, selectedItem)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).theItemWasMoved)
 
     const canDestroy = selectedItem.getCanDestroy()
     const canPlaceOn = selectedItem.getCanPlaceOn()
@@ -1340,8 +1340,8 @@ export class Players {
         }
 
         if (res.selection == 0) {
-          // notPlayer
-          // notItem
+          if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
+          if (notItem(selectedPlayer, selectedItem)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).theItemWasMoved)
 
           Hutao.World.success(player, Hutao.Player.getLanguage(player).clearSuccessfully)
           Hutao.World.runCommand(selectedPlayer, Hutao.Player.getLanguage(selectedPlayer).yourSlotIsClearBy.replaceAll("{player}", player.name).replaceAll("{slot}", selectedItem._slot))
@@ -1358,8 +1358,8 @@ export class Players {
         }
 
         if (res.selection == 1) {
-          // notPlayer
-          // notItem
+          if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
+          if (notItem(selectedPlayer, selectedItem)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).theItemWasMoved)
 
           player.getComponent("inventory").container.addItem(selectedItem)
 
@@ -1371,8 +1371,8 @@ export class Players {
         }
 
         if (res.selection == 2) {
-          // notPlayer
-          // notItem
+          if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
+          if (notItem(selectedPlayer, selectedItem)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).theItemWasMoved)
 
           player.getComponent("inventory").container.addItem(selectedItem)
           Hutao.World.success(player, Hutao.Player.getLanguage(player).moveSuccessfully)
@@ -1394,7 +1394,7 @@ export class Players {
   }
 
   permission(player, selectedPlayer) {
-    // notPlayer
+    if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
     new UI.ActionFormData()
       .title(Hutao.Player.getLanguage(player).adminMenuTitle)
@@ -1408,7 +1408,7 @@ export class Players {
         }
 
         if (res.selection == 0) {
-          // notPlayer
+          if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
           new UI.ModalFormData()
             .title(Hutao.Player.getLanguage(player).adminMenuTitle)
@@ -1444,7 +1444,7 @@ export class Players {
         }
 
         if (res.selection == 1) {
-          // notPlayer
+          if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
           new UI.ModalFormData()
             .title(Hutao.Player.getLanguage(player).adminMenuTitle)
@@ -1484,7 +1484,7 @@ export class Players {
   }
 
   behaviors(player, selectedPlayer) {
-    // notPlayer
+    if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
 
     new UI.ActionFormData()
       .title(Hutao.Player.getLanguage(player).adminMenuTitle)
@@ -1514,4 +1514,82 @@ export class Players {
         if (res.selection == 1) this.playerSetting(player, selectedPlayer)
       })
   }
+}
+
+const notPlayer = (player) => {
+  return !Hutao.Player.hasPlayer(player)
+}
+
+const notItem = (player, selectedItem) => {
+  let same = true
+
+  if (isNaN(Number(selectedItem.slot))) {
+    const item = player.getComponent("equipment_inventory").getEquipment(selectedItem.slot)
+
+    if (item.typeId != selectedItem.typeId) same = false
+    if (item.amount != selectedItem.amount) same = false
+    if (item.lockMode != selectedItem.lockMode) same = false
+    if (item.keepOnDeath != selectedItem.keepOnDeath) same = false
+    if (item.nameTag != selectedItem.nameTag) same = false
+    if (item.getLore() != selectedItem.getLore()) same = false
+
+    const itemEnchant = {
+      item: item.getComponent("enchantments").enchantments,
+      selectedItem: selectedItem.getComponent("enchantments").enchantments
+    }
+
+    let enchantments = {
+      item: [],
+      selectedItem: []
+    }
+
+    for (const enchant of itemEnchant.selectedItem) {
+      if (!itemEnchant.item.getEnchantment(enchant.type.id)) same = false
+
+      enchantments.selectedItem.push(enchant)
+    }
+
+    for (const enchant of itemEnchant.item) {
+      if (!itemEnchant.selectedItem.getEnchantment(enchant.type.id)) same = false
+
+      enchantments.push(enchant)
+    }
+
+    if (enchantments.item.length != enchantments.selectedItem.length) same = false
+  } else {
+    const item = player.getComponent("inventory").container.getItem(selectedItem.slot)
+
+    if (item.typeId != selectedItem.typeId) same = false
+    if (item.amount != selectedItem.amount) same = false
+    if (item.lockMode != selectedItem.lockMode) same = false
+    if (item.keepOnDeath != selectedItem.keepOnDeath) same = false
+    if (item.nameTag != selectedItem.nameTag) same = false
+    if (item.getLore() != selectedItem.getLore()) same = false
+
+    const itemEnchant = {
+      item: item.getComponent("enchantments").enchantments,
+      selectedItem: selectedItem.getComponent("enchantments").enchantments
+    }
+
+    let enchantments = {
+      item: [],
+      selectedItem: []
+    }
+
+    for (const enchant of itemEnchant.selectedItem) {
+      if (!itemEnchant.item.getEnchantment(enchant.type.id)) same = false
+
+      enchantments.selectedItem.push(enchant)
+    }
+
+    for (const enchant of itemEnchant.item) {
+      if (!itemEnchant.selectedItem.getEnchantment(enchant.type.id)) same = false
+
+      enchantments.push(enchant)
+    }
+
+    if (enchantments.item.length != enchantments.selectedItem.length) same = false
+  }
+
+  return !same
 }

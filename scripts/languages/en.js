@@ -713,5 +713,25 @@ export const en = {
   commandAntiCheatItemListTempkickRemoveSetting: "Remove items",
   itemListBanList: "Item Ban List",
   itemListKickList: "Item Kick List",
-  itemListTempkickList: "Item Tempkick List"
+  itemListTempkickList: "Item Tempkick List",
+
+  chatFormat: "Chat Format",
+  format: "Format",
+  structure: "Structure",
+  chatFormatDimension: "Dimension",
+  chatFormatGamemode: "Gamemode",
+  chatFormatHealth: "Health",
+  chatFormatLevel: "Level",
+  chatFormatLocation: "Location",
+  chatFormatRotation: "Rotation",
+  chatFormatStatus: "Status",
+  chatFormatTeam: "Team",
+  chatFormatTime: "Time",
+  chatFormatDimensionOverworld: "Overworld",
+  chatFormatDimensionNether: "Nether",
+  chatFormatDimensionTheEnd: "The end",
+  chatFormatDimensionOther: "Other",
+  pleaseEnterTheDimensionFormat: "Please enter the format of §e{dimension}",
+  unknownPlayer: "Unknown Player",
+  theItemWasMoved: "The item was moved"
 }

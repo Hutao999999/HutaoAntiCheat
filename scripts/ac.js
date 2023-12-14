@@ -231,13 +231,43 @@ export class AC {
       if (setting.default.data.chatFormat.state) {
         ev.cancel = true
 
+        const health = player.getComponent("health")
+        const time = Hutao.World.getNowTime()
+        const gamemode = Hutao.Player.getGamemode(player)
+
         const changer = {
           player: player.name,
           message: message,
           status: setting.default.data.chatFormat.format.status[player.permission],
           location: setting.default.data.chatFormat.format.location.replaceAll("{x}", Math.floor(player.location.x * 100) / 100).replaceAll("{y}", Math.floor(player.location.y * 100) / 100).replaceAll("{z}", Math.floor(player.location.z * 100) / 100),
-          rotation: setting.default.data.chatFormat.format.rotation.replaceAll("{x}", Math.floor(player.getRotation().x * 100) / 100).replaceAll("{y}", Math.floor(player.getRotation().y * 100) / 100)
+          rotation: setting.default.data.chatFormat.format.rotation.replaceAll("{x}", Math.floor(player.getRotation().x * 100) / 100).replaceAll("{y}", Math.floor(player.getRotation().y * 100) / 100),
+          health: setting.default.data.chatFormat.format.health.replaceAll("{health}", health.currentValue).replaceAll("{percent}", health.currentValue / health.effectiveMax).replaceAll("{bar}", `§a▍`.repeat(health.currentValue) + `§c▍`.repeat(health.effectiveMax - health.currentValue)),
+          time: setting.default.data.chatFormat.format.time.replaceAll("{year}", time.year).replaceAll("{month}", time.minute).replaceAll("{date}", time.date).replaceAll("{hour}", time.hour).replaceAll("{minute}", time.minute).replaceAll("{second}", time.second).replaceAll("{millisecond}", time.millisecond),
+          level: setting.default.data.chatFormat.format.level.replaceAll("{level}", Math.floor(player.xpEarnedAtCurrentLevel / player.totalXpNeededForNextLevel * 100) / 100 + player.level),
         }
+
+        if (player.dimension.id == "minecraft:overworld") changer.dimension = setting.default.data.chatFormat.format.dimension.overworld
+        else if (player.dimension.id == "minecraft:nether") changer.dimension = setting.default.data.chatFormat.format.dimension.nether
+        else if (player.dimension.id == "minecraft:the_end") changer.dimension = setting.default.data.chatFormat.format.dimension.nether
+        else changer.dimension = setting.default.data.chatFormat.format.dimension.other
+
+        if (gamemode == "survival") changer.gamemode = setting.default.data.chatFormat.format.gamemode.survival
+        else if (gamemode == "creative") changer.gamemdoe = setting.default.data.chatFormat.format.gamemode.creative
+        else if (gamemode == "adventure") changer.gamemode = setting.default.data.chatFormat.format.gamemode.adventure
+        else if (gamemode == "spectator") changer.gamemode = setting.default.data.chatFormat.format.gamemode.spectator
+        else changer.gamemode = setting.default.data.chatFormat.format.gamemode.other
+
+        if (player.team == "red") changer.team = setting.default.data.chatFormat.format.team.red
+        else if (player.team == "blue") changer.team = setting.default.data.chatFormat.format.team.blue
+        else if (player.team == "green") changer.team = setting.default.data.chatFormat.format.team.green
+        else if (player.team == "yellow") changer.team = setting.default.data.chatFormat.format.team.yellow
+        else if (player.team == "white") changer.team = setting.default.data.chatFormat.format.team.white
+        else if (player.team == "orange") changer.team = setting.default.data.chatFormat.format.team.orange
+        else if (player.team == "gray") changer.team = setting.default.data.chatFormat.format.team.gray
+        else if (player.team == "purple") changer.team = setting.default.data.chatFormat.format.team.purple
+        else if (player.team == "aqua") changer.team = setting.default.data.chatFormat.format.team.aqua
+        else if (player.team == "black") changer.team = setting.default.data.chatFormat.format.team.black
+        else if (player.team == "other") changer.team = setting.default.data.chatFormat.format.team.other
 
         let beSent
 
@@ -1291,6 +1321,18 @@ const resetValuable = (player) => {
   } else {
     player.ladder = 0
   }
+
+  if (player.hasTag("red")) player.team = "red"
+  else if (player.hasTag("blue")) player.team = "blue"
+  else if (player.hasTag("green")) player.team = "green"
+  else if (player.hasTag("yellow")) player.team = "yellow"
+  else if (player.hasTag("white")) player.team = "white"
+  else if (player.hasTag("orange")) player.team = "orange"
+  else if (player.hasTag("gray")) player.team = "gray"
+  else if (player.hasTag("purple")) player.team = "purple"
+  else if (player.hasTag("aqua")) player.team = "aqua"
+  else if (player.hasTag("black")) player.team = "black"
+  else player.team = "other"
 
   let isWeb = false
   let isOnAir = true
