@@ -401,7 +401,7 @@ export class AntiCheat {
         if (res.selection == 4) this.itemCheckE(player)
         if (res.selection == 5) this.itemCheckF(player)
         if (res.selection == 6) this.itemCheckG(player)
-        if (res.selection == 7) this.itemChecKH(player)
+        if (res.selection == 7) this.itemCheckH(player)
         if (res.selection == 8) this.itemCheckI(player)
         if (res.selection == 9) this.itemCheckJ(player)
         if (res.selection == 10) this.itemCheckK(player)

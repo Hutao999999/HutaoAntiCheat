@@ -17,7 +17,7 @@ import { scaffold } from "./scaffold"
 import { speed } from "./speed"
 
 export const antiCheat = (player) => {
-  // if (Hutao.Player.isAdmin(player)) return
+  if (Hutao.Player.isAdmin(player)) return
 
   aura(player)
   autoArmor(player)
