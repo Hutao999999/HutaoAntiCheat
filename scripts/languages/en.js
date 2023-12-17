@@ -714,7 +714,6 @@ export const en = {
   itemListBanList: "Item Ban List",
   itemListKickList: "Item Kick List",
   itemListTempkickList: "Item Tempkick List",
-
   chatFormat: "Chat Format",
   format: "Format",
   structure: "Structure",
@@ -762,4 +761,11 @@ export const en = {
   chatFormatTeamRed: "§cRed",
   chatFormatTeamWhite: "§8White",
   chatFormatTeamYellow: "§eYellow",
+  pleaseEnterTheStructureOf: "Please enter the chat structure of §e{structure}\n§e{dimension} §7- §rPlayer's dimension\n§e{gamemode} §7- §rPlayer's gamemode\n§e{health} §7- §rPlayer's health\n§e{level} §7- §rPlayer's level\n§e{location} §7- §rPlayer's location\n§e{message} §7- §rThe message player sent\n§e{player} §7- §rPlayer's name\n§e{rotation} §7- §rPlayer's rotation\n§e{status} §7- §rPlayer's status\n§e{team} §7- §rPlayer's team\n§e{time} §7- §rThe time player sent",
+  pleaseEnterTheStructure: "Please enter §e{player}§r's chat structure\n§e{dimension} §7- §rPlayer's dimension\n§e{gamemode} §7- §rPlayer's gamemode\n§e{health} §7- §rPlayer's health\n§e{level} §7- §rPlayer's level\n§e{location} §7- §rPlayer's location\n§e{message} §7- §rThe message player sent\n§e{player} §7- §rPlayer's name\n§e{rotation} §7- §rPlayer's rotation\n§e{status} §7- §rPlayer's status\n§e{team} §7- §rPlayer's team\n§e{time} §7- §rThe time player sent",
+  youAreAddAChatFormat: "You are added a chat structure by §e{player}",
+  youAreSetYourChatFormat: "You are set your chat structure by §e{player}",
+  addChatFormatSomeoneSpecific: "Add chat structure for someone specific",
+  removeChatFormat: "Remove chat structure",
+  yourChatFormatWasRemove: "Your chat structure was removed by §e{player}"
 }

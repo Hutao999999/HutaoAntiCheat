@@ -271,7 +271,11 @@ export class AC {
 
         let beSent
 
-        beSent = setting.default.data.chatFormat.structure[player.permission]
+        if (setting.default.data.chatFormat.structure.custom[player.id]) {
+          beSent = setting.default.data.chatFormat.structure.custom[player.id]
+        } else {
+          beSent = setting.default.data.chatFormat.structure[player.permission]
+        }
 
         for (const item of Object.entries(changer)) {
           beSent = beSent.replaceAll(`{${item[0]}}`, item[1])

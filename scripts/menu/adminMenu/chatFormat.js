@@ -1,7 +1,7 @@
 import * as UI from "@minecraft/server-ui"
 import { Hutao } from "../../lib/import"
 import { AdminMenu } from "../adminMenu"
-import * as setting from "../../config"
+import config, * as setting from "../../config"
 
 export class ChatFormat {
   open(player) {
@@ -43,6 +43,298 @@ export class ChatFormat {
         if (res.selection == 1) this.format(player)
         if (res.selection == 2) this.structure(player)
         if (res.selection == 3) new AdminMenu().open(player)
+      })
+  }
+
+  structure(player) {
+    const form = new UI.ActionFormData()
+      .title(Hutao.Player.getLanguage(player).adminMenuTitle)
+      .button(`§1${Hutao.Player.getLanguage(player).refresh}`, `textures/ui/refresh_light`)
+      .button(`§c${Hutao.Player.getLanguage(player).admin}\n${setting.default.data.chatFormat.structure.admin}`, `textures/ui/permissions_op_crown`)
+      .button(`§6${Hutao.Player.getLanguage(player).builder}\n${setting.default.data.chatFormat.structure.builder}`, `textures/blocks/planks_oak`)
+      .button(`§b${Hutao.Player.getLanguage(player).member}\n${setting.default.data.chatFormat.structure.member}`, `textures/ui/permissions_member_star`)
+      .button(`§d${Hutao.Player.getLanguage(player).owner}\n${setting.default.data.chatFormat.structure.owner}`, `textures/ui/store_home_icon`)
+
+    const custom = setting.default.data.chatFormat.structure.custom
+
+    Object.entries(custom).forEach(item => form.button(`${item[0]}\n§r${item[1]}`))
+
+    form.button(`§1${Hutao.Player.getLanguage(player).addChatFormatSomeoneSpecific}`, `textures/ui/color_plus`)
+      .button(`§c${Hutao.Player.getLanguage(player).back}`, `textures/ui/arrow_dark_left_stretch`)
+      .show(player)
+      .then(res => {
+        if (res.canceled) {
+          if (res.cancelationReason == "UserBusy") return this.structure(player)
+        }
+
+        if (res.selection == 0) this.structure(player)
+        if (res.selection == 1) this.structureAdmin(player)
+        if (res.selection == 2) this.structureBuilder(player)
+        if (res.selection == 3) this.structureMember(player)
+        if (res.selection == 4) this.structureOwner(player)
+        if ((res.selection - 5) == Object.keys(custom).length) this.addCustomStructure(player)
+        if ((res.selection - 5) == Object.keys(custom).length + 1) this.open(player)
+
+        if (
+          res.selection > 4 &&
+          (res.selection - 5) < Object.keys(custom).length
+        ) this.setCustomStructure(player, Hutao.Player.getPlayers(Object.keys(custom)))
+      })
+  }
+
+  setCustomStructure(player, selectedPlayerName) {
+    // notHaveStructure
+
+    new UI.ModalFormData()
+      .title(Hutao.Player.getLanguage(player).adminMenuTitle)
+      .textField(Hutao.Player.getLanguage(player).pleaseEnterTheStructure.replaceAll("{player}", selectedPlayerName), "<String>", setting.default.data.chatFormat.structure.custom[Hutao.Player.getPlayersIdByName(selectedPlayerName)])
+      .toggle(Hutao.Player.getLanguage(player).removeChatFormat)
+      .show(player)
+      .then(res => {
+        if (res.canceled) return this.setCustomStructure(player)
+        // notHaveStructure
+
+        let config = Hutao.Database.get("db")
+
+        if (res.formValues[0]) {
+          delete config.data.chatFormat.structure.custom[Hutao.Player.getPlayersIdByName(selectedPlayerName)]
+
+          Hutao.World.success(player, Hutao.Player.getLanguage(player).removeSuccessfully)
+          Hutao.World.runCommand(Hutao.Player.getPlayersByName(selectedPlayerName), Hutao.Player.getLanguage(Hutao.Player.getPlayersByName(selectedPlayerName)).yourChatFormatWasRemove.replaceAll("{player}", player.name))
+        } else {
+          const validString = (string) => {
+            if (string.trim() == "") return {
+              condition: true,
+              reason: Hutao.Player.getLanguage(player).cannotBeEmpty
+            }
+
+            return {
+              condition: false,
+              reason: "None"
+            }
+          }
+
+          if (validString(res.formValues[0]).condition) return Hutao.World.wrong(player, validString(res.formValues[0]).reason)
+
+          config.data.chatFormat.structure.custom[Hutao.Player.getPlayersIdByName(selectedPlayerName)] = res.formValues[0].trim()
+
+          Hutao.World.success(player, Hutao.Player.getLanguage(player).changedSuccessfully)
+          Hutao.World.runCommand(Hutao.Player.getPlayersByName(selectedPlayerName), Hutao.Player.getLanguage(Hutao.Player.getPlayersByName(selectedPlayerName)).youAreSetYourChatFormat.replaceAll("{player}", player.name))
+        }
+
+        Hutao.Database.set("db", config)
+
+        Hutao.SetTickTimeOut(() => {
+          this.structure(player)
+        }, 5, 1, false).on()
+      })
+  }
+
+  addCustomStructure(player) {
+    const form = new UI.ActionFormData()
+      .title(Hutao.Player.getLanguage(player).adminMenuTitle)
+      .button(`§1${Hutao.Player.getLanguage(player).refresh}`, `textures/ui/refresh_light`)
+
+    const players = Hutao.World.getAllPlayers()
+
+    players.forEach(player => Object.keys(setting.default.data.chatFormat.structure.custom).includes(player.id) ? "" : form.button(`${player.name}`))
+
+    form.button(`§c${Hutao.Player.getLanguage(player).back}`, `textures/ui/arrow_dark_left_stretch`)
+      .show(player)
+      .then(res => {
+        if (res.canceled) {
+          if (res.cancelationReason == "UserBusy") return this.addCustomStructure(player)
+        }
+
+        if (res.selection == 0) this.addCustomStructure(player)
+        if ((res.selection - 1) == players.length) this.structure(player)
+
+        if (
+          res.selection > 0 &&
+          (res.selection - 1) < players.length
+        ) this.addPlayerCustomStructure(player, players[res.selection - 1])
+      })
+  }
+
+  addPlayerCustomStructure(player, selectedPlayer) {
+    // notPlayer
+    // hasStructure
+
+    new UI.ModalFormData()
+      .title(Hutao.Player.getLanguage(player).adminMenuTitle)
+      .textField(Hutao.Player.getLanguage(player).pleaseEnterTheStructure.replaceAll("{player}", selectedPlayer.name), "<String>")
+      .show(player)
+      .then(res => {
+        if (res.canceled) return this.addCustomStructure(player)
+
+        // notPlayer
+        // hasStructure
+
+        const validString = (string) => {
+          if (string.trim() == "") return {
+            condition: true,
+            reason: Hutao.Player.getLanguage(player).cannotBeEmpty
+          }
+
+          return {
+            condition: false,
+            reason: "None"
+          }
+        }
+
+        if (validString(res.formValues[0]).condition) return Hutao.World.wrong(player, validString(res.formValues[0]).reason)
+
+        let config = Hutao.Database.get("db")
+
+        config.data.chatFormat.structure.custom[selectedPlayer.id] = res.formValues[0].trim()
+
+        Hutao.Database.set("db", config)
+        Hutao.World.success(player, Hutao.Player.getLanguage(player).changedSuccessfully)
+        Hutao.World.runCommand(selectedPlayer, Hutao.Player.getLanguage(selectedPlayer).youAreAddAChatFormat.replaceAll("{player}", player.name))
+
+        Hutao.SetTickTimeOut(() => {
+          this.structure(player)
+        }, 5, 1, false).on()
+      })
+  }
+
+  structureOwner(player) {
+    new UI.ModalFormData()
+      .title(Hutao.Player.getLanguage(player).adminMenuTitle)
+      .textField(Hutao.Player.getLanguage(player).pleaseEnterTheStructureOf.replaceAll("{structure}", Hutao.Player.getLanguage(player).owner), "<String>", setting.default.data.chatFormat.structure.owner)
+      .show(player)
+      .then(res => {
+        if (res.canceled) return this.structure(player)
+
+        const validString = (string) => {
+          if (string.trim() == "") return {
+            condition: true,
+            reason: Hutao.Player.getLanguage(player).cannotBeEmpty
+          }
+
+          return {
+            condition: false,
+            reason: "None"
+          }
+        }
+
+        if (validString(res.formValues[0])) return Hutao.World.wrong(player, validString(res.formValues[0]).reason)
+
+        let config = Hutao.Database.get("db")
+
+        config.data.chatFormat.structure.owner = res.formValues[0].trim()
+
+        Hutao.Database.set("db", config)
+        Hutao.World.success(player, Hutao.Player.getLanguage(player).changedSuccessfully)
+
+        Hutao.SetTickTimeOut(() => {
+          this.structure(player)
+        }, 5, 1, false).on()
+      })
+  }
+
+  structureMember(player) {
+    new UI.ModalFormData()
+      .title(Hutao.Player.getLanguage(player).adminMenuTitle)
+      .textField(Hutao.Player.getLanguage(player).pleaseEnterTheStructureOf.replaceAll("{structure}", Hutao.Player.getLanguage(player).member), "<String>", setting.default.data.chatFormat.structure.member)
+      .show(player)
+      .then(res => {
+        if (res.canceled) return this.structure(player)
+
+        const validString = (string) => {
+          if (string.trim() == "") return {
+            condition: true,
+            reason: Hutao.Player.getLanguage(player).cannotBeEmpty
+          }
+
+          return {
+            condition: false,
+            reason: "None"
+          }
+        }
+
+        if (validString(res.formValues[0])) return Hutao.World.wrong(player, validString(res.formValues[0]).reason)
+
+        let config = Hutao.Database.get("db")
+
+        config.data.chatFormat.structure.member = res.formValues[0].trim()
+
+        Hutao.Database.set("db", config)
+        Hutao.World.success(player, Hutao.Player.getLanguage(player).changedSuccessfully)
+
+        Hutao.SetTickTimeOut(() => {
+          this.structure(player)
+        }, 5, 1, false).on()
+      })
+  }
+
+  structureBuilder(player) {
+    new UI.ModalFormData()
+      .title(Hutao.Player.getLanguage(player).adminMenuTitle)
+      .textField(Hutao.Player.getLanguage(player).pleaseEnterTheStructureOf.replaceAll("{structure}", Hutao.Player.getLanguage(player).builder), "<String>", setting.default.data.chatFormat.structure.builder)
+      .show(player)
+      .then(res => {
+        if (res.canceled) return this.structure(player)
+
+        const validString = (string) => {
+          if (string.trim() == "") return {
+            condition: true,
+            reason: Hutao.Player.getLanguage(player).cannotBeEmpty
+          }
+
+          return {
+            condition: false,
+            reason: "None"
+          }
+        }
+
+        if (validString(res.formValues[0])) return Hutao.World.wrong(player, validString(res.formValues[0]).reason)
+
+        let config = Hutao.Database.get("db")
+
+        config.data.chatFormat.structure.builder = res.formValues[0].trim()
+
+        Hutao.Database.set("db", config)
+        Hutao.World.success(player, Hutao.Player.getLanguage(player).changedSuccessfully)
+
+        Hutao.SetTickTimeOut(() => {
+          this.structure(player)
+        }, 5, 1, false).on()
+      })
+  }
+
+  structureAdmin(player) {
+    new UI.ModalFormData()
+      .title(Hutao.Player.getLanguage(player).adminMenuTitle)
+      .textField(Hutao.Player.getLanguage(player).pleaseEnterTheStructureOf.replaceAll("{structure}", Hutao.Player.getLanguage(player).admin), "<String>", setting.default.data.chatFormat.structure.admin)
+      .show(player)
+      .then(res => {
+        if (res.canceled) return this.structure(player)
+
+        const validString = (string) => {
+          if (string.trim() == "") return {
+            condition: true,
+            reason: Hutao.Player.getLanguage(player).cannotBeEmpty
+          }
+
+          return {
+            condition: false,
+            reason: "None"
+          }
+        }
+
+        if (validString(res.formValues[0])) return Hutao.World.wrong(player, validString(res.formValues[0]).reason)
+
+        let config = Hutao.Database.get("db")
+
+        config.data.chatFormat.structure.admin = res.formValues[0].trim()
+
+        Hutao.Database.set("db", config)
+        Hutao.World.success(player, Hutao.Player.getLanguage(player).changedSuccessfully)
+
+        Hutao.SetTickTimeOut(() => {
+          this.structure(player)
+        }, 5, 1, false).on()
       })
   }
 
@@ -122,7 +414,7 @@ export class ChatFormat {
       .show(player)
       .then(res => {
         if (res.canceled) {
-          if (res.cacnelationReason == "UserBusy") return this.time(player)
+          if (res.cancelationReason == "UserBusy") return this.time(player)
         }
 
         if (res.selection == 0) this.timeTime(player)
@@ -720,7 +1012,7 @@ export class ChatFormat {
       .show(player)
       .then(res => {
         if (res.canceled) {
-          if (res.cacnelationReason == "UserBusy") return this.rotation(player)
+          if (res.cancelationReason == "UserBusy") return this.rotation(player)
         }
 
         if (res.selection == 0) this.rotationRotation(player)
@@ -771,7 +1063,7 @@ export class ChatFormat {
       .show(player)
       .then(res => {
         if (res.canceled) {
-          if (res.cacnelationReason == "UserBusy") return this.location(player)
+          if (res.cancelationReason == "UserBusy") return this.location(player)
         }
 
         if (res.selection == 0) this.locationLocation(player)
@@ -822,7 +1114,7 @@ export class ChatFormat {
       .show(player)
       .then(res => {
         if (res.canceled) {
-          if (res.cacnelationReason == "UserBusy") return this.level(player)
+          if (res.cancelationReason == "UserBusy") return this.level(player)
         }
 
         if (res.selection == 0) this.levelLevel(player)
@@ -873,7 +1165,7 @@ export class ChatFormat {
       .show(player)
       .then(res => {
         if (res.canceled) {
-          if (res.cacnelationReason == "UserBusy") return this.health(player)
+          if (res.cancelationReason == "UserBusy") return this.health(player)
         }
 
         if (res.selection == 0) this.healthHealth(player)

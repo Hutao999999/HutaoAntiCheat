@@ -25,7 +25,8 @@ export const configCache = {
         owner: "{status}§7{player} §r§7▶ §r{message}",
         admin: "{status}§7{player} §r§7▶ §r{message}",
         builder: "{status}§7{player} §r§7▶ §r{message}",
-        member: "{status}§7{player} §r§7▶ §r{message}"
+        member: "{status}§7{player} §r§7▶ §r{message}",
+        custom: {}
       },
       format: {
         status: {

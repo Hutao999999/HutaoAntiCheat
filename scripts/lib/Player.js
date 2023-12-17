@@ -129,10 +129,38 @@ export class Player {
 
   static getPlayers(id) {
     for (const player of Minecraft.world.getPlayers()) {
-      if (player.id == id) return players
+      if (player.id == id) return player.name
     }
 
     return setting.default.data.players[id].name
+  }
+
+  static getPlayersByName(name) {
+    for (const player of Minecraft.world.getPlayers()) {
+      if (player.name == name) return player
+    }
+
+    return undefined
+  }
+
+  static getPlayersById(id) {
+    for (const player of Minecraft.world.getPlayers()) {
+      if (player.id == id) return player
+    }
+
+    return undefined
+  }
+
+  static getPlayersIdByName(name) {
+    for (const player of Minecraft.world.getPlayers()) {
+      if (player.id == name) return player.id
+    }
+
+    for (const player of Object.entries(setting.default.data.players)) {
+      if (player[1].name == name) return player[0]
+    }
+
+    return undefined
   }
 
   static hasPlayer(player) {
