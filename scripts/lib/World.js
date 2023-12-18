@@ -135,6 +135,18 @@ export class World {
     }
   }
 
+  static commandToMessage(command) {
+    for (let i = 0; i < command.length; i++) {
+      if (command[i].includes(" ")) command[i] = `"${command[i]}"`
+    }
+
+    return command.join(" ")
+  }
+
+  static getNormalCommand(player, index) {
+    return this.getCommand(this.commandToMessage(player.command), false)[index]
+  }
+
   static getCommand(message, toLowerCase = true, type = "normal") {
     const get = (string) => {
       let strings

@@ -3,6 +3,7 @@ import antiCheatCommand from "./antiCheat"
 import settingCommand from "./setting"
 import languageCommand from "./language"
 import { Hutao } from "../lib/import"
+import chatFormat from "./chatFormat"
 
 export const command = (player, command) => {
   const commands = {
@@ -11,16 +12,21 @@ export const command = (player, command) => {
       permission: "admin",
       state: true,
     },
-    "setting": {
-      name: "setting",
-      permission: "all",
+    "chat-format": {
+      name: "chatFormat",
+      permission: "admin",
       state: true
     },
     "language": {
       name: "language",
       permission: "all",
       state: true
-    }
+    },
+    "setting": {
+      name: "setting",
+      permission: "all",
+      state: true
+    },
   }
 
   if (Object.keys(commands).includes(command[0])) {
@@ -44,6 +50,7 @@ export const command = (player, command) => {
 
 const functions = {
   antiCheat: antiCheatCommand,
+  chatFormat: chatFormat,
+  language: languageCommand,
   setting: settingCommand,
-  language: languageCommand
 }

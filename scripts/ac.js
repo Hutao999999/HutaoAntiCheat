@@ -61,6 +61,8 @@ export class AC {
         if (setting.default.data.commands.state) {
           ev.cancel = true
 
+          player.command = Hutao.World.getCommand(message, false)
+
           Minecraft.system.run(() => {
             command(player, Hutao.World.getCommand(message))
           })

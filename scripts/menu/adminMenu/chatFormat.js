@@ -1413,7 +1413,7 @@ export class ChatFormat {
       .button(`§1${Hutao.Player.getLanguage(player).chatFormatDimensionNether}\n${setting.default.data.chatFormat.format.dimension.nether}`, `textures/blocks/netherrack`)
       .button(`§1${Hutao.Player.getLanguage(player).chatFormatDimensionOther}\n${setting.default.data.chatFormat.format.dimension.other}`, `textures/ui/mashup_world`)
       .button(`§1${Hutao.Player.getLanguage(player).chatFormatDimensionOverworld}\n${setting.default.data.chatFormat.format.dimension.overworld}`, `textures/blocks/grass_size_carried`)
-      .button(`§1${Hutao.Player.getLanguage(player).chatFormatDimensionTheEnd}\n${setting.default.data.chatFormat.format.dimension.theEndset}`, `textures/blocks/end_stone`)
+      .button(`§1${Hutao.Player.getLanguage(player).chatFormatDimensionTheEnd}\n${setting.default.data.chatFormat.format.dimension.theEnd}`, `textures/blocks/end_stone`)
       .button(`§c${Hutao.Player.getLanguage(player).back}`, `textures/ui/arrow_dark_left_stretch`)
       .show(player)
       .then(res => {
