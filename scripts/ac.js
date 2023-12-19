@@ -419,19 +419,20 @@ export class AC {
           if (setting.default.data.antiCheat.killauraI.state) {
             const distance = Math.sqrt(
               (damagingEntity.getHeadLocation().x - hitEntity.location.x) ** 2 +
-              (damagingEntity.getHeadLocation().y - hitEntity.location.y) ** 2 +
               (damagingEntity.getHeadLocation().z - hitEntity.location.z) ** 2
             )
 
-            const diffYRotation = -6 + (15 - Math.min(Math.abs(damagingEntity.getRotation().x) - 75, 0)) * (8 / 15)
+            if (damagingEntity.getHeadLocation().y - hitEntity.location.y < 4) {
+              const diffYRotation = -6 + (15 - Math.min(Math.abs(damagingEntity.getRotation().x) - 75, 0)) * (8 / 15)
 
-            if (distance > diffYRotation) {
-              Hutao.Player.checking(player, `Killaura`, `I`)
+              if (distance > diffYRotation) {
+                Hutao.Player.checking(damagingEntity, `Killaura`, `I`)
 
-              damagingEntity.addEffect("weakness", 40, {
-                amplifier: 255,
-                showParticles: false
-              })
+                damagingEntity.addEffect("weakness", 40, {
+                  amplifier: 255,
+                  showParticles: false
+                })
+              }
             }
           }
 
@@ -973,7 +974,7 @@ export class AC {
         if (setting.default.data.antiCheat.fastThrowA.state) {
           if (throwable.includes(item.typeId)) {
             if (player.lastThrow) {
-              if (Date.now() - player.lastThrow < 50) {
+              if (Date.now() - player.lastThrow < 40) {
                 Hutao.Player.checking(player, `FastThrow`, `A`)
                 ev.cancel = true
               }

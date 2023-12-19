@@ -17,9 +17,9 @@ export const blink = (player) => {
       if (speed > 0) {
         if (player.lastBlinkSpeed == speed) {
           if (
-            player.lastAction3?.location?.x == player.location.x &&
-            player.lastAction3?.location?.y == player.location.y &&
-            player.lastAction3?.location?.z == player.location.z
+            (player.lastAction3?.location?.x - player.location.x) < 0.001 &&
+            (player.lastAction3?.location?.y - player.location.y) < 0.001 &&
+            (player.lastAction3?.location?.z - player.location.z) < 0.001
           ) {
             player.blinkAChecking ??= 0
             player.blinkAChecking += 1

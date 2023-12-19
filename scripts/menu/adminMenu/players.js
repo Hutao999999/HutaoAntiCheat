@@ -1412,7 +1412,7 @@ export class Players {
 
           new UI.ModalFormData()
             .title(Hutao.Player.getLanguage(player).adminMenuTitle)
-            .toggle(`§1${Hutao.Player.getLanguage(player).admin}`, Hutao.Player.isAdmin(player))
+            .toggle(`${Hutao.Player.getLanguage(player).admin}`, Hutao.Player.isAdmin(selectedPlayer))
             .show(player)
             .then(res => {
               if (res.canceled) return this.permission(player)
@@ -1448,7 +1448,7 @@ export class Players {
 
           new UI.ModalFormData()
             .title(Hutao.Player.getLanguage(player).adminMenuTitle)
-            .toggle(`§1${Hutao.Player.getLanguage(player).builder}`, Hutao.Player.isBuilder(player))
+            .toggle(`${Hutao.Player.getLanguage(player).builder}`, Hutao.Player.isBuilder(selectedPlayer))
             .show(player)
             .then(res => {
               if (res.canceled) return this.permission(player)

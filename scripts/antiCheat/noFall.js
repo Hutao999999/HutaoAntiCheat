@@ -53,13 +53,13 @@ const check = (player) => {
     })
 
     if (
-      !player.legBlock.typeId.endsWith("slab") &&
-      !player.legBlock.typeId.endsWith("carpet") &&
-      !player.legBlock.typeId.endsWith("wall") &&
-      !blockUnder.typeId.endsWith("slab") &&
-      !blockUnder.typeId.endsWith("carpet") &&
-      !blockUnder.typeId.endsWith("wall") &&
-      !blockUnder.typeId.endsWith("stairs")
+      !player.legBlock?.typeId.endsWith("slab") &&
+      !player.legBlock?.typeId.endsWith("carpet") &&
+      !player.legBlock?.typeId.endsWith("wall") &&
+      !blockUnder?.typeId.endsWith("slab") &&
+      !blockUnder?.typeId.endsWith("carpet") &&
+      !blockUnder?.typeId.endsWith("wall") &&
+      !blockUnder?.typeId.endsWith("stairs")
     ) {
       return true
     } else {

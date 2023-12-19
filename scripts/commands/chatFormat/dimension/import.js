@@ -22,11 +22,11 @@ export const dimension = (player, command) => {
     Hutao.World.success(player, Hutao.Player.getLanguage(player).closeTheChatBarToOpenChatFormatFormatDimensionMenu)
   } else if (command[3] == undefined) {
     Hutao.World.showHelp(player,
+      [`format dimension §dopen`, Hutao.Player.getLanguage(player).commandOpenChatFormatFormatDimensionMenu],
+      [`format dimension §dother`, Hutao.Player.getLanguage(player).commandChatFormatDimensionOther],
       [`format dimension §doverworld`, Hutao.Player.getLanguage(player).commandChatFormatDimensionOverworld],
       [`format dimension §dnether`, Hutao.Player.getLanguage(player).commandChatFormatDimensionNether],
       [`format dimension §dthe-end`, Hutao.Player.getLanguage(player).commandChatFormatDimensionTheEnd],
-      [`format dimension §dother`, Hutao.Player.getLanguage(player).commandChatFormatDimensionOther],
-      [`format dimension §dopen`, Hutao.Player.getLanguage(player).commandOpenChatFormatFormatDimensionMenu],
     )
   } else {
     Hutao.World.wrongCommand(player, command, 3)
