@@ -21,19 +21,18 @@ export const autoArmor = (player) => {
         const item = equipment.getEquipment(slot)
 
         if (item) {
-          if (
-            player.isSprinting &&
-            container.emptySlotsCount - player.emptyInventorySlots > 0
-          ) {
+          if (container.emptySlotsCount - player.emptyInventorySlots > 0) {
             if (setting.default.data.antiCheat.autoArmorA.state) {
-              Minecraft.system.run(() => {
-                if (Date.now() - player.autoArmorChecking > 100) {
-                  Hutao.Player.checking(player, `AutoArmor`, `A`)
+              if (player.isSprinting) {
+                Minecraft.system.run(() => {
+                  if (Date.now() - player.autoArmorChecking > 100) {
+                    Hutao.Player.checking(player, `AutoArmor`, `A`)
 
-                  container.addItem(item)
-                  equipment.setEquipment(slot)
-                }
-              })
+                    container.addItem(item)
+                    equipment.setEquipment(slot)
+                  }
+                })
+              }
             }
 
             if (setting.default.data.antiCheat.autoArmorB.state) {
@@ -107,20 +106,19 @@ export const autoArmor = (player) => {
     const item = equipment.getEquipment("Offhand")
 
     if (item) {
-      if (
-        player.isSprinting &&
-        container.emptySlotsCount - player.emptyInventorySlots > 0
-      ) {
+      if (container.emptySlotsCount - player.emptyInventorySlots > 0) {
         if (setting.default.data.antiCheat.autoTotemA.state) {
-          if (item.typeId == "minecraft:totem_of_undying") {
-            Minecraft.system.run(() => {
-              if (Date.now() - player.autoArmorChecking > 100) {
-                Hutao.Player.checking(player, `AutoTotem`, `A`)
+          if (player.isSprinting) {
+            if (item.typeId == "minecraft:totem_of_undying") {
+              Minecraft.system.run(() => {
+                if (Date.now() - player.autoArmorChecking > 100) {
+                  Hutao.Player.checking(player, `AutoTotem`, `A`)
 
-                container.addItem(item)
-                equipment.setEquipment("Offhand")
-              }
-            })
+                  container.addItem(item)
+                  equipment.setEquipment("Offhand")
+                }
+              })
+            }
           }
         }
 
@@ -197,15 +195,17 @@ export const autoArmor = (player) => {
         }
 
         if (setting.default.data.antiCheat.autoShieldA.state) {
-          if (item.typeId == "minecraft:shield") {
-            Minecraft.system.run(() => {
-              if (Date.now() - player.autoArmorChecking > 100) {
-                Hutao.Player.checking(player, `AutoShield`, `A`)
+          if (player.isSprinting) {
+            if (item.typeId == "minecraft:shield") {
+              Minecraft.system.run(() => {
+                if (Date.now() - player.autoArmorChecking > 100) {
+                  Hutao.Player.checking(player, `AutoShield`, `A`)
 
-                container.addItem(item)
-                equipment.setEquipment("Offhand")
-              }
-            })
+                  container.addItem(item)
+                  equipment.setEquipment("Offhand")
+                }
+              })
+            }
           }
         }
 

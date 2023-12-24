@@ -228,6 +228,17 @@ export class World {
     this.log(`§l§c▶§r §c${Player.getLanguage(player).unknownCommand}\n §7${allCommand.join(" ")}`, player)
   }
 
+  static getPlayerFromCommand(command) {
+    if (command.startsWith("@")) command = command.slice(1)
+    if (command.startsWith("\"")) command = command.slice(1, command.length - 1)
+
+    for (const player of Minecraft.world.getPlayers()) {
+      if (player.name.toLowerCase() == command) return player
+    }
+
+    return undefined
+  }
+
   static saveTps(tps) {
     deltaTime.push(tps)
 

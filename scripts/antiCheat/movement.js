@@ -15,6 +15,7 @@ export const movement = (player) => {
       !player.getEffect("levitation") &&
       !player.getEffect("jump_boost") &&
       !player.isFlying &&
+      !player.hasTag("riding") &&
       player.location.y >= player.dimension.heightRange.min
     ) {
       player.movementATimes ??= 0

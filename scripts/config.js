@@ -487,25 +487,25 @@ export default {
         state: true,
         punishment: "tempkick",
         flags: 10,
-        distance: 5
+        distance: 7
       },
       reachB: {
         state: true,
         punishment: "tempkick",
         flags: 10,
-        distance: 5
+        distance: 7
       },
       reachC: {
         state: true,
         punishment: "tempkick",
         flags: 10,
-        distance: 5
+        distance: 7
       },
       reachD: {
         state: true,
         punishment: "tempkick",
         flags: 10,
-        distance: 5
+        distance: 7
       },
       scaffoldA: {
         state: true,

@@ -3,6 +3,7 @@ import * as setting from "../config"
 import { state } from "./chatFormat/state"
 import { ChatFormat } from "../menu/adminMenu/chatFormat"
 import { format } from "./chatFormat/format"
+import { structure } from "./chatFormat/structure"
 
 export default {
   name: "chatFormat",
@@ -11,7 +12,7 @@ export default {
     if (command[1] == "format") {
       format(player, command)
     } else if (command[1] == "structure") {
-
+      structure(player, command)
     } else if (command[1] == "state") {
       state(player, command)
     } else if (command[1] == "open") {

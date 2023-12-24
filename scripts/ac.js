@@ -769,7 +769,7 @@ export class AC {
             z: headLocation.z
           })
 
-          if (!headBlock.isSolid) {
+          if (headBlock.isSolid) {
             if (!scaffoldDByPassBlock.includes(headBlock.typeId)) {
               if (!(
                 headLocation.x == block.location.x &&
@@ -808,14 +808,12 @@ export class AC {
         }
 
         if (setting.default.data.antiCheat.scaffoldG.state) {
-          if (!player.isFlying) {
-            if (player.getRotation().x == 60) {
-              ev.cancel = true
+          if (player.getRotation().x == 60) {
+            ev.cancel = true
 
-              Minecraft.system.run(() => {
-                Hutao.Player.checking(player, `Scaffold`, `G`)
-              })
-            }
+            Minecraft.system.run(() => {
+              Hutao.Player.checking(player, `Scaffold`, `G`)
+            })
           }
         }
 
@@ -910,6 +908,7 @@ export class AC {
     const afterEventsPlayerPlaceBlock = Minecraft.world.afterEvents.playerPlaceBlock.subscribe(ev => {
       const player = ev.player
       const block = ev.block
+      const dimension = ev.dimension
 
       if (![
         "admin",
@@ -944,9 +943,11 @@ export class AC {
         if (setting.default.data.antiCheat.scaffoldB.state) {
           const item = Hutao.Player.getHandItem(player)
 
-          if (block.permutation.getItemStack(1).typeId != item.typeId) {
-            Hutao.Player.checking(player, `Scaffold`, `B`)
-            block.setType("minecraft:air")
+          if (!canPlaceOnBlock.includes(block.typeId)) {
+            if (block.permutation.getItemStack(1).typeId != item.typeId) {
+              Hutao.Player.checking(player, `Scaffold`, `B`)
+              block.setType("minecraft:air")
+            }
           }
         }
 
@@ -974,8 +975,9 @@ export class AC {
         if (setting.default.data.antiCheat.fastThrowA.state) {
           if (throwable.includes(item.typeId)) {
             if (player.lastThrow) {
-              if (Date.now() - player.lastThrow < 40) {
+              if (Date.now() - player.lastThrow < 150) {
                 Hutao.Player.checking(player, `FastThrow`, `A`)
+                player.lastThrow = Date.now()
                 ev.cancel = true
               }
             }
@@ -1560,4 +1562,9 @@ const scaffoldDByPassBlock = [
   "minecraft:flowing_lava",
   "minecraft:air",
   "minecraft:structure_void"
+]
+
+const canPlaceOnBlock = [
+  "minecraft:air",
+  "minecraft:light_block"
 ]

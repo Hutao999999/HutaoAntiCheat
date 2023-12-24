@@ -83,7 +83,7 @@ export class ChatFormat {
   }
 
   setCustomStructure(player, selectedPlayerName) {
-    // notHaveStructure
+    if (notStructure(Hutao.Player.getPlayersIdByName(selectedPlayerName))) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).thePlayerHasNoStructure)
 
     new UI.ModalFormData()
       .title(Hutao.Player.getLanguage(player).adminMenuTitle)
@@ -92,7 +92,7 @@ export class ChatFormat {
       .show(player)
       .then(res => {
         if (res.canceled) return this.setCustomStructure(player)
-        // notHaveStructure
+        if (notStructure(Hutao.Player.getPlayersIdByName(selectedPlayerName))) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).thePlayerHasNoStructure)
 
         let config = Hutao.Database.get("db")
 
@@ -157,8 +157,8 @@ export class ChatFormat {
   }
 
   addPlayerCustomStructure(player, selectedPlayer) {
-    // notPlayer
-    // hasStructure
+    if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
+    if (!notStructure(Hutao.Player.getPlayersIdByName)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).thePlayerHasStructure)
 
     new UI.ModalFormData()
       .title(Hutao.Player.getLanguage(player).adminMenuTitle)
@@ -167,8 +167,8 @@ export class ChatFormat {
       .then(res => {
         if (res.canceled) return this.addCustomStructure(player)
 
-        // notPlayer
-        // hasStructure
+        if (notPlayer(selectedPlayer)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).unknownPlayer)
+        if (!notStructure(Hutao.Player.getPlayersIdByName)) return Hutao.World.wrong(player, Hutao.Player.getLanguage(player).thePlayerHasStructure)
 
         const validString = (string) => {
           if (string.trim() == "") return {
@@ -1568,4 +1568,12 @@ export class ChatFormat {
         }, 5, 1, false).on()
       })
   }
+}
+
+const notPlayer = (player) => {
+  return !Hutao.Player.hasPlayer(player)
+}
+
+const notStructure = (player) => {
+  return !Object.keys(setting.default.data.chatFormat.structure.custom).includes(player.id)
 }
