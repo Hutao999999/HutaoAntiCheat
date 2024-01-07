@@ -31,6 +31,7 @@ export class AntiCheat {
       .button(`§1NoFall`, `textures/ui/levitation_effect`)
       .button(`§1NoSlowDown`, `textures/ui/slowness_effect`)
       .button(`§1Nuker`, `textures/environment/destroy_stage_6`)
+      .button(`§1Phase`, `texutres/ui/speed_effect`)
       .button(`§1Reach`, `textures/ui/strength_effect`)
       .button(`§1Scaffold`, `textures/blocks/planks_oak`)
       .button(`§1Spammer`, `textures/ui/chat_send`)
@@ -65,11 +66,12 @@ export class AntiCheat {
         if (res.selection == 20) this.noFallSetting(player)
         if (res.selection == 21) this.noSlowDownSetting(player)
         if (res.selection == 22) this.nukerSetting(player)
-        if (res.selection == 23) this.reachSetting(player)
-        if (res.selection == 24) this.scaffoldSetting(player)
-        if (res.selection == 25) this.spammerSetting(player)
-        if (res.selection == 26) this.speedSetting(player)
-        if (res.selection == 27) new AdminMenu().open(player)
+        if (res.selection == 23) this.phase(player)
+        if (res.selection == 24) this.reachSetting(player)
+        if (res.selection == 25) this.scaffoldSetting(player)
+        if (res.selection == 26) this.spammerSetting(player)
+        if (res.selection == 27) this.speedSetting(player)
+        if (res.selection == 28) new AdminMenu().open(player)
       })
   }
 
@@ -444,7 +446,7 @@ export class AntiCheat {
   movementSetting(player) {
     new UI.ActionFormData()
       .title(Hutao.Player.getLanguage(player).adminMenuTitle)
-      .button(`§1Movement/A\n${getEnabled(player, `movementA`)}`, `textures/ui/speed_effect`)
+      .button(`§1Movement/A\n${getEnabled(player, `movementA`)}`, `textures/ui/jump_boost_effect`)
       .button(`§c${Hutao.Player.getLanguage(player).back}`, `textures/ui/arrow_dark_left_stretch`)
       .show(player)
       .then(res => {
@@ -453,7 +455,7 @@ export class AntiCheat {
         }
 
         if (res.selection == 0) this.movementA(player)
-        if (res.selection == 1) this.open(player)
+        if (res.selection == 2) this.open(player)
       })
   }
 
@@ -519,6 +521,7 @@ export class AntiCheat {
       .button(`§1Nuker/E\n${getEnabled(player, `nukerE`)}`, `textures/items/bed_red`)
       .button(`§1Nuker/F\n${getEnabled(player, `nukerF`)}`, `textures/items/bed_red`)
       .button(`§1Nuker/G\n${getEnalbed(player, `nukerG`)}`, `textures/environment/destroy_stage_6`)
+      .button(`§1Nuker/G\n${getEnalbed(player, `nukerH`)}`, `textures/environment/destroy_stage_6`)
       .button(`§c${Hutao.Player.getLanguage(player).back}`, `textures/ui/arrow_dark_left_stretch`)
       .show(player)
       .then(res => {
@@ -533,7 +536,24 @@ export class AntiCheat {
         if (res.selection == 4) this.nukerE(player)
         if (res.selection == 5) this.nukerF(player)
         if (res.selection == 6) this.nukerG(player)
-        if (res.selection == 7) this.open(player)
+        if (res.selection == 7) this.nukerH(player)
+        if (res.selection == 8) this.open(player)
+      })
+  }
+
+  phaseSetting(player) {
+    new UI.ActionFormData()
+      .title(Hutao.Player.getLanguage(player).adminMenuTitle)
+      .button(`§1Phase/A\n${getEnabled(player, `phaseA`)}`, `textures/ui/speed_effect`)
+      .button(`§c${Hutao.Player.getLanguage(player).back}`, `textures/ui/arrow_dark_left_stretch`)
+      .show(player)
+      .then(res => {
+        if (res.canceled) {
+          if (res.cancelationReason == "UserBusy") return this.phaseSetting(player)
+        }
+
+        if (res.selection == 0) this.phaseA(player)
+        if (res.selection == 1) this.open(player)
       })
   }
 
@@ -572,6 +592,7 @@ export class AntiCheat {
       .button(`§1Scaffold/I\n${getEnabled(player, `scaffoldI`)}`, `textures/ui/speed_effect`)
       .button(`§1Scaffold/J\n${getEnabled(player, `scaffoldJ`)}`, `textures/blocks/planks`)
       .button(`§1Scaffold/K\n${getEnabled(player, `scaffoldK`)}`, `textures/blocks/planks_oak`)
+      .button(`§1Scaffold/K\n${getEnabled(player, `scaffoldL`)}`, `textures/blocks/planks_oak`)
       .button(`§c${Hutao.Player.getLanguage(player).back}`, `textures/ui/arrow_dark_left_stretch`)
       .show(player)
       .then(res => {
@@ -590,7 +611,8 @@ export class AntiCheat {
         if (res.selection == 8) this.scaffoldI(player)
         if (res.selection == 9) this.scaffoldJ(player)
         if (res.selection == 10) this.scaffoldK(player)
-        if (res.selection == 11) this.open(player)
+        if (res.selection == 11) this.scaffoldL(player)
+        if (res.selection == 12) this.open(player)
       })
   }
 
@@ -648,6 +670,21 @@ export class AntiCheat {
       })
   }
 
+  scaffoldL(player) {
+    this.antiCheatForm(player, `scaffoldL`, true, true)
+      .button(`§c${Hutao.Player.getLanguage(player).back}`, `textures/ui/arrow_dark_left_stretch`)
+      .show(player)
+      .then(res => {
+        if (res.canceled) {
+          if (res.cancelationReason == "UserBusy") return this.scaffoldL(player)
+        }
+
+        this.dealAntiCheatForm(player, res, `scaffoldL`, true, true)
+
+        if (res.selection == 4) this.scaffoldSetting(player)
+      })
+  }
+
   scaffoldK(player) {
     this.antiCheatForm(player, `scaffoldK`, true, true)
       .button(`§c${Hutao.Player.getLanguage(player).back}`, `textures/ui/arrow_dark_left_stretch`)
@@ -662,7 +699,6 @@ export class AntiCheat {
         if (res.selection == 4) this.scaffoldSetting(player)
       })
   }
-
 
   scaffoldJ(player) {
     this.antiCheatForm(player, `scaffoldJ`, true, true)
@@ -751,6 +787,21 @@ export class AntiCheat {
         this.dealAntiCheatForm(player, res, `blinkA`, true, true)
 
         if (res.selection == 4) this.blinkSetting(player)
+      })
+  }
+
+  nukerH(player) {
+    this.antiCheatForm(player, `nukerH`, true, true)
+      .button(`§c${Hutao.Player.getLanguage(player).back}`, `textures/ui/arrow_dark_left_stretch`)
+      .show(player)
+      .then(res => {
+        if (res.canceled) {
+          if (res.cancelationReason == "UserBusy") return this.nukerH(player)
+        }
+
+        this.dealAntiCheatForm(player, res, `nukerH`, true, true)
+
+        if (res.selection == 4) this.nukerSetting(player)
       })
   }
 
@@ -1805,6 +1856,21 @@ export class AntiCheat {
         this.dealAntiCheatForm(player, res, `nameSpoofA`, true, false)
 
         if (res.selection == 4) this.nameSpoofSetting(player)
+      })
+  }
+
+  phaseA(player) {
+    this.antiCheatForm(player, `phaseA`, true, true)
+      .button(`§c${Hutao.Player.getLanguage(player).back}`, `textures/ui/arrow_dark_left_stretch`)
+      .show(player)
+      .then(res => {
+        if (res.canceled) {
+          if (res.cancelationReason == "UserBusy") return this.phaseA(player)
+        }
+
+        this.dealAntiCheatForm(player, res, `phaseA`, true, true)
+
+        if (res.selection == 4) this.phaseSetting(player)
       })
   }
 
@@ -3122,6 +3188,7 @@ const dealAntiCheat = {
   nukerE: `Nuker/E`,
   nukerF: `Nuker/F`,
   nukerG: `Nuker/G`,
+  nukerH: `Nuker/H`,
   reachA: `Reach/A`,
   reachB: `Reach/B`,
   reachC: `Reach/C`,
@@ -3136,6 +3203,7 @@ const dealAntiCheat = {
   scaffoldH: `Scaffold/H`,
   scaffoldI: `Scaffold/I`,
   scaffoldK: `Scaffold/K`,
+  scaffoldL: `Scaffold/L`,
   spammerA: `Spammer/A`,
   spammerB: `Spammer/B`,
   spammerC: `Spammer/C`,

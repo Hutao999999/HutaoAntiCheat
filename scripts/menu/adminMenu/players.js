@@ -623,7 +623,7 @@ export class Players {
 
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
-                                      }, 20, 1, false).on()
+                                      }, 5, 1, false).on()
 
                                       return
                                     }
@@ -633,7 +633,7 @@ export class Players {
 
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
-                                      }, 20, 1, false).on()
+                                      }, 5, 1, false).on()
 
                                       return
                                     }
@@ -643,7 +643,7 @@ export class Players {
 
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
-                                      }, 20, 1, false).on()
+                                      }, 5, 1, false).on()
 
                                       return
                                     }
@@ -723,7 +723,7 @@ export class Players {
 
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
-                                      }, 20, 1, false).on()
+                                      }, 5, 1, false).on()
 
                                       return
                                     }
@@ -733,7 +733,7 @@ export class Players {
 
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
-                                      }, 20, 1, false).on()
+                                      }, 5, 1, false).on()
 
                                       return
                                     }
@@ -743,7 +743,7 @@ export class Players {
 
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
-                                      }, 20, 1, false).on()
+                                      }, 5, 1, false).on()
 
                                       return
                                     }
@@ -813,7 +813,7 @@ export class Players {
 
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
-                                      }, 20, 1, false).on()
+                                      }, 5, 1, false).on()
 
                                       return
                                     }
@@ -823,7 +823,7 @@ export class Players {
 
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
-                                      }, 20, 1, false).on()
+                                      }, 5, 1, false).on()
 
                                       return
                                     }
@@ -877,7 +877,7 @@ export class Players {
 
                                         Hutao.SetTickTimeOut(() => {
                                           change(player, selectedPlayer, slot, item)
-                                        }, 20, 1, false).on()
+                                        }, 5, 1, false).on()
 
                                         return
                                       }
@@ -887,7 +887,7 @@ export class Players {
 
                                         Hutao.SetTickTimeOut(() => {
                                           change(player, selectedPlayer, slot, item)
-                                        }, 20, 1, false).on()
+                                        }, 5, 1, false).on()
 
                                         return
                                       }
@@ -955,7 +955,7 @@ export class Players {
 
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
-                                      }, 20, 1, false).on()
+                                      }, 5, 1, false).on()
                                     }
 
                                     if (item.canPlaceOn.includes(res.formValues[0].trim())) {
@@ -963,7 +963,7 @@ export class Players {
 
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
-                                      }, 20, 1, false).on()
+                                      }, 5, 1, false).on()
                                     }
 
 
@@ -1015,7 +1015,7 @@ export class Players {
 
                                         Hutao.SetTickTimeOut(() => {
                                           change(player, selectedPlayer, slot, item)
-                                        }, 20, 1, false).on()
+                                        }, 5, 1, false).on()
 
                                         return
                                       }
@@ -1025,7 +1025,7 @@ export class Players {
 
                                         Hutao.SetTickTimeOut(() => {
                                           change(player, selectedPlayer, slot, item)
-                                        }, 20, 1, false).on()
+                                        }, 5, 1, false).on()
 
                                         return
                                       }
@@ -1093,7 +1093,7 @@ export class Players {
 
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
-                                      }, 20, 1, false).on()
+                                      }, 5, 1, false).on()
 
                                       return
                                     }
@@ -1103,7 +1103,7 @@ export class Players {
 
                                       Hutao.SetTickTimeOut(() => {
                                         change(player, selectedPlayer, slot, item)
-                                      }, 20, 1, false).on()
+                                      }, 5, 1, false).on()
 
                                       return
                                     }
@@ -1157,7 +1157,7 @@ export class Players {
 
                                         Hutao.SetTickTimeOut(() => {
                                           change(player, selectedPlayer, slot, item)
-                                        }, 20, 1, false).on()
+                                        }, 5, 1, false).on()
 
                                         return
                                       }
@@ -1167,7 +1167,7 @@ export class Players {
 
                                         Hutao.SetTickTimeOut(() => {
                                           change(player, selectedPlayer, slot, item)
-                                        }, 20, 1, false).on()
+                                        }, 5, 1, false).on()
 
                                         return
                                       }
@@ -1204,7 +1204,7 @@ export class Players {
 
                               Hutao.SetTickTimeOut(() => {
                                 normalSetting(player, selectedPlayer, slot, item)
-                              }, 20, 1, false).on()
+                              }, 5, 1, false).on()
 
                               return
                             }
@@ -1214,7 +1214,7 @@ export class Players {
 
                               Hutao.SetTickTimeOut(() => {
                                 normalSetting(player, selectedPlayer, slot, item)
-                              }, 20, 1, false).on()
+                              }, 5, 1, false).on()
 
                               return
                             }
@@ -1415,7 +1415,7 @@ export class Players {
             .toggle(`${Hutao.Player.getLanguage(player).admin}`, Hutao.Player.isAdmin(selectedPlayer))
             .show(player)
             .then(res => {
-              if (res.canceled) return this.permission(player)
+              if (res.canceled) return this.permission(player, selectedPlayer)
 
               let config = Hutao.Database.get("db")
 
@@ -1424,14 +1424,14 @@ export class Players {
                   config.data.permission.admin.push(selectedPlayer.id)
                 }
 
-                Hutao.World.success(player, Hutao.Player.getLanguage(player).removeSuccessfully)
+                Hutao.World.success(player, Hutao.Player.getLanguage(player).addSuccessfully)
                 Hutao.World.runCommand(selectedPlayer, Hutao.Player.getLanguage(selectedPlayer).youAreAddedToTheAdmin.replaceAll("{player}", player.name))
               } else {
                 if (config.data.permission.admin.includes(selectedPlayer.id)) {
                   config.data.permission.admin.splice(config.data.permission.admin.indexOf(selectedPlayer.id), 1)
                 }
 
-                Hutao.World.success(player, Hutao.Player.getLanguage(player).addSuccessfully)
+                Hutao.World.success(player, Hutao.Player.getLanguage(player).removeSuccessfully)
                 Hutao.World.runCommand(selectedPlayer, Hutao.Player.getLanguage(selectedPlayer).youAreRemovedFromTheAdmin.replaceAll("{player}", player.name))
               }
 
@@ -1451,7 +1451,7 @@ export class Players {
             .toggle(`${Hutao.Player.getLanguage(player).builder}`, Hutao.Player.isBuilder(selectedPlayer))
             .show(player)
             .then(res => {
-              if (res.canceled) return this.permission(player)
+              if (res.canceled) return this.permission(player, selectedPlayer)
 
               let config = Hutao.Database.get("db")
 
@@ -1460,14 +1460,14 @@ export class Players {
                   config.data.permission.builder.push(selectedPlayer.id)
                 }
 
-                Hutao.World.success(player, Hutao.Player.getLanguage(player).removeSuccessfully)
+                Hutao.World.success(player, Hutao.Player.getLanguage(player).addSuccessfully)
                 Hutao.World.runCommand(selectedPlayer, Hutao.Player.getLanguage(selectedPlayer).youAreAddedToTheBuilder.replaceAll("{player}", player.name))
               } else {
                 if (config.data.permission.builder.includes(selectedPlayer.id)) {
                   config.data.permission.builder.splice(config.data.permission.builder.indexOf(selectedPlayer.id), 1)
                 }
 
-                Hutao.World.success(player, Hutao.Player.getLanguage(player).addSuccessfully)
+                Hutao.World.success(player, Hutao.Player.getLanguage(player).removeSuccessfully)
                 Hutao.World.runCommand(selectedPlayer, Hutao.Player.getLanguage(selectedPlayer).youAreRemovedFromTheBuilder.replaceAll("{player}", player.name))
               }
 

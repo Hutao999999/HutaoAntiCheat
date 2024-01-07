@@ -26,6 +26,20 @@ export class Player {
     return player
   }
 
+  static toDown(player) {
+    player.teleport({
+      x: player.location.x,
+      y: player.location.y - 2,
+      z: player.location.z
+    }, {
+      dimension: player.dimension,
+      rotation: {
+        x: player.getRotation().x,
+        y: player.getRotation().y
+      }
+    })
+  }
+
   static setGamemode(player, gamemode) {
     player.runCommand(`gamemode ${gamemode} @s`)
   }
@@ -180,10 +194,20 @@ export class Player {
   }
 
   static returnLastLocation(player) {
+    const returnSpeed = {
+      x: ((player.lastAction.location.x - player.location.x) % 1) * 2,
+      y: 0,
+      z: ((player.lastAction.location.z - player.location.z) % 1) * 2
+    }
+
+    if (!player.returnSpeed) {
+      player.returnSpeed = returnSpeed
+    }
+
     player.teleport({
-      x: player.lastAction.location.x,
+      x: player.lastAction.location.x + player.returnSpeed.x,
       y: player.lastAction.location.y,
-      z: player.lastAction.location.z
+      z: player.lastAction.location.z + player.returnSpeed.z
     }, {
       dimension: Minecraft.world.getDimension(player.lastAction.dimension),
       rotation: {
@@ -258,6 +282,7 @@ const antiCheat = {
   "NoFall": "noFall",
   "NoSlowDown": "noSlowDown",
   "Nuker": "nuker",
+  "Phase": "phase",
   "Reac": "reach",
   "Scaffold": "scaffold",
   "Spammer": "spammer",

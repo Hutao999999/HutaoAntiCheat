@@ -63,9 +63,40 @@ export const killauraA = (player, command) => {
       Hutao.World.success(player, Hutao.Player.getLanguage(player).changedSuccessfully)
     } else {
       Hutao.World.showHelp(player,
-        [`a punishment §d<Number>`, Hutao.Player.getLanguage(player).commandFlags],
+        [`a flags §d<Number>`, Hutao.Player.getLanguage(player).commandFlags],
       )
     }
+  } else if (command[3] == "punishment") {
+    if (command[5]) return Hutao.World.wrongCommand(player, command, 5)
+
+    if (command[4] != undefined) {
+      if (Hutao.Punishment.getAll().includes(command[4])) {
+        let config = Hutao.Database.get("db")
+
+        config.data.antiCheat.killauraA.punishment = command[4]
+
+        Hutao.Database.set("db", config)
+        Hutao.World.success(player, Hutao.Player.getLanguage(player).changedSuccessfully)
+      } else {
+        Hutao.World.wrongCommand(player, command, 4)
+      }
+    } else {
+      Hutao.World.showHelp(player,
+        [`a punishment §d${Hutao.Punishment.getText()}`, Hutao.Player.getLanguage(player).commandPunishment]
+      )
+    }
+  } else if (command[3] == "view") {
+    if (command[4]) return Hutao.World.wrongCommand(player, command, 4)
+
+    Hutao.World.log([
+      `§7=========================`,
+      `§e${Hutao.Player.getLanguage(player).project} §7▶ §6InventoryAction/A`,
+      ``,
+      `§e${Hutao.Player.getLanguage(player).limitOfFlags} §7▶ §6${setting.default.data.antiCheat.killauraA.flags}`,
+      `§e${Hutao.Player.getLanguage(player).punishment} §7▶ §6${Hutao.Player.getLanguage(player)[setting.default.data.antiCheat.killauraA.punishment]}`,
+      `§e${Hutao.Player.getLanguage(player).state} §7▶ §6${setting.default.data.antiCheat.killauraA.state ? `§a${Hutao.Player.getLanguage(player).enabled}` : `§c${Hutao.Player.getLanguage(player).disabled}`}`,
+      `§7=========================`,
+    ].join("\n§r"), player)
   } else if (command[3] == "view") {
     if (command[4]) return Hutao.World.wrongCommand(player, command, 4)
 

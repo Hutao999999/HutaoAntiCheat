@@ -62,7 +62,7 @@ export const itemCheckA = (player, command) => {
       Hutao.World.success(player, Hutao.Player.getLanguage(player).changedSuccessfully)
     } else {
       Hutao.World.showHelp(player,
-        [`a punishment §d<Number>`, Hutao.Player.getLanguage(player).commandFlags],
+        [`a flags §d<Number>`, Hutao.Player.getLanguage(player).commandFlags],
       )
     }
   } else if (command[3] == "view") {

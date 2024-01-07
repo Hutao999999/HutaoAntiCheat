@@ -66,6 +66,25 @@ export const reachB = (player, command) => {
         [`b flags §d<Number>`, Hutao.Player.getLanguage(player).commandFlags],
       )
     }
+  } else if (command[3] == "punishment") {
+    if (command[5]) return Hutao.World.wrongCommand(player, command, 5)
+
+    if (command[4] != undefined) {
+      if (Hutao.Punishment.getAll().includes(command[4])) {
+        let config = Hutao.Database.get("db")
+
+        config.data.antiCheat.reachB.punishment = command[4]
+
+        Hutao.Database.set("db", config)
+        Hutao.World.success(player, Hutao.Player.getLanguage(player).changedSuccessfully)
+      } else {
+        Hutao.World.wrongCommand(player, command, 4)
+      }
+    } else {
+      Hutao.World.showHelp(player,
+        [`a punishment §d${Hutao.Punishment.getText()}`, Hutao.Player.getLanguage(player).commandPunishment]
+      )
+    }
   } else if (command[3] == "view") {
     if (command[4]) return Hutao.World.wrongCommand(player, command, 4)
 

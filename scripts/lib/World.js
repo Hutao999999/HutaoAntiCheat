@@ -20,14 +20,14 @@ export class World {
 
   static showHelp(player, ...helps) {
     let messages = [
-      "§一§7========================="
+      "§一§7============================================="
     ]
 
     for (const help of helps) {
       messages.push(`§一§7${help[0]} §r§7- ${help[1]}`)
     }
 
-    messages.push("§一§7=========================")
+    messages.push("§一§7=============================================")
     this.log(messages.join("\n"), player)
   }
 

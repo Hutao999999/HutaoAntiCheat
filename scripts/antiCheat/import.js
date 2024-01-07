@@ -11,13 +11,18 @@ import { invalidSprint } from "./invalidSprint"
 import { inventoryAction } from "./inventoryAction"
 import { itemCheck } from "./itemCheck"
 import { movement } from "./movement"
+import { nameSpoof } from "./nameSpoof"
 import { noFall } from "./noFall"
 import { noSlowDown } from "./noSlowDown"
+import { phase } from "./phase"
 import { scaffold } from "./scaffold"
 import { speed } from "./speed"
 
 export const antiCheat = (player) => {
-  if (Hutao.Player.isAdmin(player)) return
+  if ([
+    "owner",
+    "admin"
+  ].includes(player.permission)) return
 
   aura(player)
   autoArmor(player)
@@ -31,8 +36,10 @@ export const antiCheat = (player) => {
   inventoryAction(player)
   itemCheck(player)
   movement(player)
+  nameSpoof(player)
   noFall(player)
   noSlowDown(player)
+  phase(player)
   scaffold(player)
   speed(player)
 }

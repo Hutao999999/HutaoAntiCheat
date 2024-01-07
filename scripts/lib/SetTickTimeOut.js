@@ -23,15 +23,14 @@ export class SetTickTimeOut {
     if (this.tick) {
       this.callback = Minecraft.system.runInterval(() => {
         if (ticks % this.tick == 0) {
-          if (
-            this.firstRun &&
-            ticks == 0
-          ) {
-            this.run()
-            times++
+          if (ticks == 0) {
+            if (this.firstRun) {
+              this.run()
+              times++
 
-            if (times >= this.times) {
-              this.off()
+              if (times >= this.times) {
+                this.off()
+              }
             }
           } else {
             this.run()

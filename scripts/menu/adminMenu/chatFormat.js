@@ -23,9 +23,7 @@ export class ChatFormat {
             .toggle(`§7${Hutao.Player.getLanguage(player).disabledEnabled} ${Hutao.Player.getLanguage(player).chatFormat}`, setting.default.data.chatFormat.state)
             .show(player)
             .then(res => {
-              if (res.canceled) {
-                if (res.cancelationReason == "UserBusy") return this.open(player)
-              }
+              if (res.canceled) return this.open(player)
 
               let config = Hutao.Database.get("db")
 

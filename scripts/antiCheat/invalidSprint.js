@@ -42,6 +42,13 @@ export const invalidSprint = (player) => {
     player.sprint = false
   }
 
+  if (player.getEffect("blindness")) {
+    player.blindness = 0
+  } else {
+    player.blindness ??= 0
+    player.blindness += 1
+  }
+
   if (setting.default.data.antiCheat.invalidSprintA.state) {
     if (player.getEffect("blindness")) {
       if (
@@ -53,6 +60,9 @@ export const invalidSprint = (player) => {
       ) {
         player.invalidSprintAChecking ??= 0
         player.invalidSprintAChecking += 1
+
+        player.lastSprint = false
+        player.sprint = false
 
         if (
           player.blindness < 20 &&
@@ -96,4 +106,5 @@ export const invalidSprint = (player) => {
   }
 
   player.ground = player.isOnGround
+  player.lastSprint = player.sprint
 }

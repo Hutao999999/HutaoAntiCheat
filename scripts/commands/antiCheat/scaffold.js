@@ -12,6 +12,7 @@ import { scaffoldH } from "./scaffold/scaffoldH"
 import { scaffoldI } from "./scaffold/scaffoldI"
 import { scaffoldJ } from "./scaffold/scaffoldJ"
 import { scaffoldK } from "./scaffold/scaffoldK"
+import { scaffoldL } from "./scaffold/scaffoldL"
 
 export const scaffold = (player, command) => {
   if (command[2] == "a") {
@@ -36,6 +37,8 @@ export const scaffold = (player, command) => {
     scaffoldJ(player, command)
   } else if (command[2] == "k") {
     scaffoldK(player, command)
+  } else if (command[2] == "l") {
+    scaffoldL(player, command)
   } else if (command[2] == "open") {
     if (command[3]) return Hutao.World.wrongCommand(player, command, 3)
 
@@ -57,6 +60,7 @@ export const scaffold = (player, command) => {
       [`${setting.default.data.commands.normalPrefix}anti-cheat scaffold §di`, Hutao.Player.getLanguage(player).commandAntiCheatScaffoldISetting],
       [`${setting.default.data.commands.normalPrefix}anti-cheat scaffold §dj`, Hutao.Player.getLanguage(player).commandAntiCheatScaffoldJSetting],
       [`${setting.default.data.commands.normalPrefix}anti-cheat scaffold §dk`, Hutao.Player.getLanguage(player).commandAntiCheatScaffoldKSetting],
+      [`${setting.default.data.commands.normalPrefix}anti-cheat scaffold §dl`, Hutao.Player.getLanguage(player).commandAntiCheatScaffoldLSetting],
       [`${setting.default.data.commands.normalPrefix}anti-cheat scaffold §dopen`, Hutao.Player.getLanguage(player).commandOpenScaffoldMenu],
     )
   } else {

@@ -6,6 +6,8 @@ import { antiCheat } from "./antiCheat/import";
 import { entityCheck } from "./antiCheat/entityCheck";
 import { AdminMenu } from "./menu/adminMenu";
 import { command } from "./commands/import";
+import { Verify } from "./menu/verify";
+import { PlayerMenu } from "./menu/playerMenu";
 
 export class AC {
   start(ms) {
@@ -41,6 +43,25 @@ export class AC {
       return
     }
 
+    for (const player of Minecraft.world.getPlayers()) {
+      if (!setting.default.data.players[player.id].verified) {
+        let config = Hutao.Database.get("db")
+
+        config.data.players[player.id].verified = false
+        config.data.players[player.id].verifyLocation = {
+          x: player.location.x,
+          y: player.location.y,
+          z: player.location.z,
+          rx: player.getRotation().x,
+          ry: player.getRotation().y,
+          dimension: player.dimension.id
+        }
+
+        Hutao.Database.set("db", config)
+        new Verify().open(player)
+      }
+    }
+
     const start = Minecraft.system.currentTick
 
     Minecraft.world.startTick = start
@@ -71,6 +92,11 @@ export class AC {
           Hutao.World.wrong(player, Hutao.Player.getLanguage(player).commandsWasNotOpened)
         }
 
+        return
+      }
+
+      if (!setting.default.data.players[player.id].verified) {
+        ev.cancel = true
         return
       }
 
@@ -422,7 +448,7 @@ export class AC {
               (damagingEntity.getHeadLocation().z - hitEntity.location.z) ** 2
             )
 
-            if (damagingEntity.getHeadLocation().y - hitEntity.location.y < 4) {
+            if (damagingEntity.getHeadLocation().y - hitEntity.location.y < 3) {
               const diffYRotation = -6 + (15 - Math.min(Math.abs(damagingEntity.getRotation().x) - 75, 0)) * (8 / 15)
 
               if (distance > diffYRotation) {
@@ -477,6 +503,13 @@ export class AC {
         if (Hutao.Player.isAdmin(player)) {
           new AdminMenu().open(player)
         }
+      } else if (
+        item.typeId == setting.default.data.playerMenu.identifier &&
+        itme.getLore().includes(setting.default.data.playerMenu.encrypt)
+      ) {
+        if (setting.default.data.playerMenu.state) {
+          new PlayerMenu().open(player)
+        }
       }
 
       if (
@@ -490,6 +523,15 @@ export class AC {
       }
     })
 
+    const afterEventsEffecAdd = Minecraft.world.afterEvents.effectAdd.subscribe(ev => {
+      const entity = ev.entity
+      const effect = ev.effect
+
+      if (effect.typeId == "minecraft:instant_health") {
+        entity.gotInstantHealth = Date.now()
+      }
+    })
+
     const afterEventsEntityHurt = Minecraft.world.afterEvents.entityHurt.subscribe(ev => {
       const damagingEntity = ev.damageSource.damagingEntity
       const hurtEntity = ev.hurtEntity
@@ -497,7 +539,11 @@ export class AC {
 
       if (cause) {
         if (hurtEntity.typeId == "minecraft:player") {
-          hurtEntity.gotHurt = Date.now()
+          if (Date.now() - hurtEntity.gotInstantHealth < 10) {
+            if (cause == "entityAttack") {
+              hurtEntity.gotHurt = Date.now()
+            }
+          }
         }
       }
 
@@ -600,6 +646,11 @@ export class AC {
         "admin",
         "owner"
       ].includes(player.permission)) {
+        if (!setting.default.data.players[player.id].verified) {
+          ev.cancel = true
+          return
+        }
+
         if (setting.default.data.antiCheat.nukerA.state) {
           player.nukerABreak ??= 0
           player.nukerABreak += 1
@@ -671,6 +722,26 @@ export class AC {
           }
         }
 
+        if (setting.default.data.antiCheat.nukerH.state) {
+          const distance = Math.sqrt(
+            (player.getHeadLocation().x - block.location.x) ** 2 +
+            (player.getHeadLocation().z - block.location.z) ** 2
+          )
+
+          if (player.getHeadLocation().y - block.location.y < 3) {
+            const diffYRotation = -6 + (15 - Math.min(Math.abs(player.getRotation().x) - 75, 0)) * (8 / 15)
+
+            if (distance > diffYRotation) {
+              Hutao.Player.checking(player, `Nuker`, `H`)
+
+              player.addEffect("weakness", 40, {
+                amplifier: 255,
+                showParticles: false
+              })
+            }
+          }
+        }
+
         if (setting.default.data.antiCheat.inventoryActionE.state) {
           if (
             Date.now() - player.openContainer < 1000 &&
@@ -737,6 +808,11 @@ export class AC {
         "admin",
         "owner"
       ].includes(player.permission)) {
+        if (!setting.default.data.players[player.id].verified) {
+          ev.cancel = true
+          return
+        }
+
         if (setting.default.data.antiCheat.reachC.state) {
           const distance = Math.sqrt(
             (player.getHeadLocation().x - block.location.x) ** 2 +
@@ -961,6 +1037,26 @@ export class AC {
             }
           }
         }
+
+        if (setting.default.data.antiCheat.scaffoldL.state) {
+          const distance = Math.sqrt(
+            (player.getHeadLocation().x - block.location.x) ** 2 +
+            (player.getHeadLocation().z - block.location.z) ** 2
+          )
+
+          if (player.getHeadLocation().y - block.location.y < 3) {
+            const diffYRotation = -6 + (15 - Math.min(Math.abs(player.getRotation().x) - 75, 0)) * (8 / 15)
+
+            if (distance > diffYRotation) {
+              Hutao.Player.checking(player, `Scaffold`, `L`)
+
+              player.addEffect("weakness", 40, {
+                amplifier: 255,
+                showParticles: false
+              })
+            }
+          }
+        }
       }
     })
 
@@ -972,6 +1068,11 @@ export class AC {
         "admin",
         "owner"
       ].includes(player.permission)) {
+        if (!setting.default.data.players[player.id].verified) {
+          ev.cancel = true
+          return
+        }
+
         if (setting.default.data.antiCheat.fastThrowA.state) {
           if (throwable.includes(item.typeId)) {
             if (player.lastThrow) {
@@ -999,29 +1100,54 @@ export class AC {
           "admin",
           "owner"
         ].includes(player)) {
-          if (setting.default.data.antiCheat.nameSpoofA.state) {
-            const validString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 "
-            let name = player.name
+          if (setting.default.data.verify.state) {
+            let config = Hutao.Database.get("db")
 
-            for (const string of validString) {
-              name = name.replaceAll(string, "")
+            config.data.players[player.id].verified = false
+            config.data.players[player.id].verifyLocation = {
+              x: player.location.x,
+              y: player.location.y,
+              z: player.location.z,
+              rx: player.getRotation().x,
+              ry: player.getRotation().y,
+              dimension: player.dimension.id
             }
 
-            if (name.length > 0) {
-              Hutao.Player.checking(player, `NameSpoof`, `A`)
-            }
-          }
-
-          if (setting.default.data.antiCheat.nameSpoofB.state) {
-            if (
-              player.name.length < 5 ||
-              player.name.length > 16
-            ) {
-              Hutao.Player.checking(player, `NameSpoof`, `B`)
-            }
+            Hutao.Database.set("db", config)
+            new Verify().open(player)
           }
         }
+      } else {
+        let config = Hutao.Database.get("db")
+
+        config.data.players[player.id].verified = true
+        delete config.data.players[player.id].verifyLocation
+
+        Hutao.Database.set("db")
       }
+    })
+
+    const afterEventsPistonActivate = Minecraft.world.afterEvents.pistonActivate.subscribe(ev => {
+      const piston = ev.piston
+      const dimension = ev.dimension
+
+
+      Minecraft.system.run(() => {
+        piston.getAttachedBlocks().forEach(block => {
+          dimension.getEntities({
+            location: {
+              x: block.x + 0.5,
+              y: block.y + 0.5,
+              z: block.z + 0.5
+            },
+            type: "minecraft:player",
+            maxDistance: 2
+          }).forEach(player => {
+            player.gotPush = true
+            player.gotPushRemove = 0
+          })
+        })
+      })
     })
 
     const runInterval = Minecraft.system.runInterval(() => {
@@ -1070,6 +1196,84 @@ export class AC {
                 y: setting.default.data.players[player.id].freezeLocation.ry
               }
             })
+          }
+        }
+
+        if (!setting.default.data.players[player.id].verified) {
+          // if (
+          //   Math.abs(player.location.x - setting.default.data.players[player.id].verifyLocation?.x) > 0.01 ||
+          //   Math.abs(player.location.y - setting.default.data.players[player.id].verifyLocation?.y) > 0.01 ||
+          //   Math.abs(player.location.z - setting.default.data.players[player.id].verifyLocation?.z) > 0.01 ||
+          //   player.dimension.id != setting.default.data.players[player.id].verifyLocation?.dimension
+          // ) {
+          //   player.teleport({
+          //     x: setting.default.data.players[player.id].verifyLocation.x,
+          //     y: setting.default.data.players[player.id].verifyLocation.y,
+          //     z: setting.default.data.players[player.id].verifyLocation.z
+          //   }, {
+          //     dimension: Minecraft.world.getDimension(setting.default.data.players[player.id].verifyLocation.dimension),
+          //     rotation: {
+          //       x: setting.default.data.players[player.id].verifyLocation.rx,
+          //       y: setting.default.data.players[player.id].verifyLocation.ry
+          //     }
+          //   })
+          // }
+        }
+
+        if (Minecraft.system.currentTick % 10 == 0) {
+          if (setting.default.data.nameTag.state) {
+            const health = player.getComponent("health")
+            const time = Hutao.World.getNowTime()
+            const gamemode = Hutao.Player.getGamemode(player)
+
+            const changer = {
+              player: player.name,
+              status: setting.default.data.nameTag.format.status[player.permission],
+              location: setting.default.data.nameTag.format.location.replaceAll("{x}", Math.floor(player.location.x * 100) / 100).replaceAll("{y}", Math.floor(player.location.y * 100) / 100).replaceAll("{z}", Math.floor(player.location.z * 100) / 100),
+              rotation: setting.default.data.nameTag.format.rotation.replaceAll("{x}", Math.floor(player.getRotation().x * 100) / 100).replaceAll("{y}", Math.floor(player.getRotation().y * 100) / 100),
+              health: setting.default.data.nameTag.format.health.replaceAll("{health}", health.currentValue).replaceAll("{percent}", health.currentValue / health.effectiveMax).replaceAll("{bar}", `§a▍`.repeat(health.currentValue) + `§c▍`.repeat(health.effectiveMax - health.currentValue)),
+              time: setting.default.data.nameTag.format.time.replaceAll("{year}", time.year).replaceAll("{month}", time.minute).replaceAll("{date}", time.date).replaceAll("{hour}", time.hour).replaceAll("{minute}", time.minute).replaceAll("{second}", time.second).replaceAll("{millisecond}", time.millisecond),
+              level: setting.default.data.nameTag.format.level.replaceAll("{level}", Math.floor(player.xpEarnedAtCurrentLevel / player.totalXpNeededForNextLevel * 100) / 100 + player.level),
+            }
+
+            if (player.dimension.id == "minecraft:overworld") changer.dimension = setting.default.data.nameTag.format.dimension.overworld
+            else if (player.dimension.id == "minecraft:nether") changer.dimension = setting.default.data.nameTag.format.dimension.nether
+            else if (player.dimension.id == "minecraft:the_end") changer.dimension = setting.default.data.nameTag.format.dimension.nether
+            else changer.dimension = setting.default.data.nameTag.format.dimension.other
+
+            if (gamemode == "survival") changer.gamemode = setting.default.data.nameTag.format.gamemode.survival
+            else if (gamemode == "creative") changer.gamemdoe = setting.default.data.nameTag.format.gamemode.creative
+            else if (gamemode == "adventure") changer.gamemode = setting.default.data.nameTag.format.gamemode.adventure
+            else if (gamemode == "spectator") changer.gamemode = setting.default.data.nameTag.format.gamemode.spectator
+            else changer.gamemode = setting.default.data.nameTag.format.gamemode.other
+
+            if (player.team == "red") changer.team = setting.default.data.nameTag.format.team.red
+            else if (player.team == "blue") changer.team = setting.default.data.nameTag.format.team.blue
+            else if (player.team == "green") changer.team = setting.default.data.nameTag.format.team.green
+            else if (player.team == "yellow") changer.team = setting.default.data.nameTag.format.team.yellow
+            else if (player.team == "white") changer.team = setting.default.data.nameTag.format.team.white
+            else if (player.team == "orange") changer.team = setting.default.data.nameTag.format.team.orange
+            else if (player.team == "gray") changer.team = setting.default.data.nameTag.format.team.gray
+            else if (player.team == "purple") changer.team = setting.default.data.nameTag.format.team.purple
+            else if (player.team == "aqua") changer.team = setting.default.data.nameTag.format.team.aqua
+            else if (player.team == "black") changer.team = setting.default.data.nameTag.format.team.black
+            else if (player.team == "other") changer.team = setting.default.data.nameTag.format.team.other
+
+            let beSent
+
+            if (setting.default.data.nameTag.structure.custom[player.id]) {
+              beSent = setting.default.data.nameTag.structure.custom[player.id]
+            } else {
+              beSent = setting.default.data.nameTag.structure[player.permission]
+            }
+
+            for (const item of Object.entries(changer)) {
+              beSent = beSent.replaceAll(`{${item[0]}}`, item[1])
+            }
+
+            player.nameTag = beSent
+          } else {
+            player.nameTag = player.name
           }
         }
 
@@ -1182,6 +1386,8 @@ const resetValuable = (player) => {
   player.flag["nukerE"] ??= 0
   player.flag["nukerF"] ??= 0
   player.flag["nukerG"] ??= 0
+  player.flag["nukerH"] ??= 0
+  player.flag["phaseA"] ??= 0
   player.flag["reachA"] ??= 0
   player.flag["reachB"] ??= 0
   player.flag["reachC"] ??= 0
@@ -1197,6 +1403,7 @@ const resetValuable = (player) => {
   player.flag["scaffoldI"] ??= 0
   player.flag["scaffoldJ"] ??= 0
   player.flag["scaffoldK"] ??= 0
+  player.flag["scaffoldL"] ??= 0
   player.flag["spammerA"] ??= 0
   player.flag["spammerB"] ??= 0
   player.flag["spammerC"] ??= 0
@@ -1239,6 +1446,8 @@ const resetValuable = (player) => {
   player.permission = Hutao.Player.getPermission(player)
   player.lastAction = player.lastAction2
   player.lastAction2 = player.lastAction3
+
+  player.permission = "member"
 
   player.lastActions ??= []
 
@@ -1348,9 +1557,9 @@ const resetValuable = (player) => {
   let gotPush = false
 
   const offsets = [
-    0.1,
+    0.5,
     0,
-    -0.1
+    -0.5
   ]
 
   const exceptBlock = [
@@ -1388,7 +1597,7 @@ const resetValuable = (player) => {
             }
           }
 
-          if (y == -1) {
+          if (y == -0.5) {
             if (!exceptBlock.includes(block?.typeId)) {
               isOnAir = false
             }
@@ -1403,6 +1612,16 @@ const resetValuable = (player) => {
 
   player.isInWeb = isWeb
   player.isOnAir = isOnAir
+
+  if (player.gotPush) {
+    player.gotPushRemove ??= 0
+    player.gotPushRemove += 1
+  }
+
+  if (player.gotPushRemove > 10) {
+    player.gotPush = false
+    player.gotPushRemove = undefined
+  }
 
   if (true) {
     const velocity = Math.sqrt(
@@ -1464,6 +1683,16 @@ const resetValuable = (player) => {
     } else {
       player.otherDirectionSprinting = 0
     }
+  }
+
+  if (player.returnSpeed) {
+    player.removeReturnSpeed ??= 0
+    player.removeReturnSpeed += 1
+  }
+
+  if (player.removeReturnSpeed > 10) {
+    player.returnSpeed = undefined
+    player.removeReturnSpeed = 0
   }
 
   if (true) {

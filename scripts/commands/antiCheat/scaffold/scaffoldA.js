@@ -63,7 +63,7 @@ export const scaffoldA = (player, command) => {
       Hutao.World.success(player, Hutao.Player.getLanguage(player).changedSuccessfully)
     } else {
       Hutao.World.showHelp(player,
-        [`a punishment §d<Number>`, Hutao.Player.getLanguage(player).commandFlags],
+        [`a flags §d<Number>`, Hutao.Player.getLanguage(player).commandFlags],
       )
     }
   } else if (command[3] == "view") {
@@ -78,6 +78,25 @@ export const scaffoldA = (player, command) => {
       `§e${Hutao.Player.getLanguage(player).state} §7▶ §6${setting.default.data.antiCheat.scaffoldA.state ? `§a${Hutao.Player.getLanguage(player).enabled}` : `§c${Hutao.Player.getLanguage(player).disabled}`}`,
       `§7=========================`,
     ].join("\n§r"), player)
+  } else if (command[3] == "punishment") {
+    if (command[5]) return Hutao.World.wrongCommand(player, command, 5)
+
+    if (command[4] != undefined) {
+      if (Hutao.Punishment.getAll().includes(command[4])) {
+        let config = Hutao.Database.get("db")
+
+        config.data.antiCheat.scaffoldA.punishment = command[4]
+
+        Hutao.Database.set("db", config)
+        Hutao.World.success(player, Hutao.Player.getLanguage(player).changedSuccessfully)
+      } else {
+        Hutao.World.wrongCommand(player, command, 4)
+      }
+    } else {
+      Hutao.World.showHelp(player,
+        [`a punishment §d${Hutao.Punishment.getText()}`, Hutao.Player.getLanguage(player).commandPunishment]
+      )
+    }
   } else if (command[3] == "reset") {
     if (command[4]) return Hutao.World.wrongCommand(player, command, 4)
 

@@ -63,7 +63,7 @@ export const invalidSprintA = (player, command) => {
       Hutao.World.success(player, Hutao.Player.getLanguage(player).changedSuccessfully)
     } else {
       Hutao.World.showHelp(player,
-        [`a punishment §d<Number>`, Hutao.Player.getLanguage(player).commandFlags],
+        [`a flags §d<Number>`, Hutao.Player.getLanguage(player).commandFlags],
       )
     }
   } else if (command[3] == "punishment") {
@@ -82,7 +82,7 @@ export const invalidSprintA = (player, command) => {
       }
     } else {
       Hutao.World.showHelp(player,
-        [`a flags §d${Hutao.Punishment.getText()}`, Hutao.Player.getLanguage(player).commandPunishment]
+        [`a punishment §d${Hutao.Punishment.getText()}`, Hutao.Player.getLanguage(player).commandPunishment]
       )
     }
   } else if (command[3] == "view") {

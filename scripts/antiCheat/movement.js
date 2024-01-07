@@ -11,12 +11,12 @@ export const movement = (player) => {
       Date.now() - player.gotExplosion > 5000 &&
       player.isOnAir &&
       player.getVelocity().y > 0 &&
-      player.location.y - player.lastAction3.location.y > 3 &&
       !player.getEffect("levitation") &&
       !player.getEffect("jump_boost") &&
       !player.isFlying &&
       !player.hasTag("riding") &&
-      player.location.y >= player.dimension.heightRange.min
+      player.location.y >= player.dimension.heightRange.min &&
+      player.location.y - player.lastAction3.location.y > 3
     ) {
       player.movementATimes ??= 0
       player.movementATimes += 1
@@ -37,7 +37,7 @@ export const movement = (player) => {
   }
 
   if (player.movementAChecking > 200) {
-    player.movementTimes = 0
-    player.movementAChecking = 0
+    player.movementATimes = 0
+    player.movementAChecking = undefined
   }
 }

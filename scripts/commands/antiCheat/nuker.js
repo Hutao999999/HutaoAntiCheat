@@ -8,6 +8,7 @@ import { nukerD } from "./nuker/nukerD"
 import { nukerE } from "./nuker/nukerE"
 import { nukerF } from "./nuker/nukerF"
 import { nukerG } from "./nuker/nukerG"
+import { nukerH } from "./nuker/nukerH"
 
 export const nuker = (player, command) => {
   if (command[2] == "a") {
@@ -24,6 +25,8 @@ export const nuker = (player, command) => {
     nukerF(player, command)
   } else if (command[2] == "g") {
     nukerG(player, command)
+  } else if (command[2] == "h") {
+    nukerH(player, command)
   } else if (command[2] == "open") {
     if (command[3]) return Hutao.World.wrongCommand(player, command, 3)
 
@@ -41,6 +44,7 @@ export const nuker = (player, command) => {
       [`${setting.default.data.commands.normalPrefix}anti-cheat nuker §de`, Hutao.Player.getLanguage(player).commandAntiCheatNukerESetting],
       [`${setting.default.data.commands.normalPrefix}anti-cheat nuker §df`, Hutao.Player.getLanguage(player).commandAntiCheatNukerFSetting],
       [`${setting.default.data.commands.normalPrefix}anti-cheat nuker §dg`, Hutao.Player.getLanguage(player).commandAntiCheatNukerGSetting],
+      [`${setting.default.data.commands.normalPrefix}anti-cheat nuker §dh`, Hutao.Player.getLanguage(player).commandAntiCheatNukerHSetting],
       [`${setting.default.data.commands.normalPrefix}anti-cheat nuker §dopen`, Hutao.Player.getLanguage(player).commandOpenNukerMenu],
     )
   } else {

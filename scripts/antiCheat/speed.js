@@ -17,7 +17,7 @@ export const speed = (player) => {
 
       if (
         average > (
-          1.4 +
+          1.2 +
           player.elytraSpeed +
           player.ridingSpeed +
           player.tridentSpeed +
@@ -25,14 +25,16 @@ export const speed = (player) => {
           player.speed
         )
       ) {
-        player.speedATimes ??= 0
-        player.speedATimes += 1
-        player.speedAChecking = 0
+        if (!player.gotPush) {
+          player.speedATimes ??= 0
+          player.speedATimes += 1
+          player.speedAChecking = 0
 
-        Hutao.Player.returnLastLocation(player)
+          Hutao.Player.returnLastLocation(player)
 
-        if (player.speedATimes > 1) {
-          Hutao.Player.checking(player, `Speed`, `A`)
+          if (player.speedATimes > 1) {
+            Hutao.Player.checking(player, `Speed`, `A`)
+          }
         }
       }
     }

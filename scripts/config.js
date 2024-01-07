@@ -13,7 +13,8 @@ export default {
     },
     playerMenu: {
       encrypt: "",
-      identifier: "minecraft:compass"
+      identifier: "minecraft:compass",
+      state: true,
     },
     commands: {
       state: true,
@@ -26,6 +27,55 @@ export default {
         admin: "{status}§7{player} §r§7▶ §r{message}",
         builder: "{status}§7{player} §r§7▶ §r{message}",
         member: "{status}§7{player} §r§7▶ §r{message}",
+        custom: {}
+      },
+      format: {
+        status: {
+          owner: "§7[§dOwner§7]§r",
+          admin: "§7[§cAdmin§7]§r",
+          builder: "§7[§6Builder§7]§r",
+          member: "§7[§bMember§7]§r"
+        },
+        location: "§7[§aXYZ§7: §e{x}§7, §e{y}§7, §e{z}§7]§r",
+        rotation: "§7[§aXY§7: §e{x}§7, §e{y}§7]§r",
+        dimension: {
+          overworld: "§7[§aOverworld§7]§r",
+          nether: "§7[§cNether§7]§r",
+          theEnd: "§7[§eThe end§7]§r",
+          other: "§7[§7Other§7]§r"
+        },
+        health: "§7[§c{health}♥§7]§r",
+        time: "§7[§b{year}§7/§b{month}§7/§b{date} §b{hour}§7:§b{minute}§7:§b{second}§7.§b{millisecond}§7]§r",
+        gamemode: {
+          survival: "§7[§eSurvival§7]§r",
+          creative: "§7[§6Creative§7]§r",
+          adventure: "§7[§cAdventure§7]§r",
+          spectator: "§7[§7Spectator§7]§r",
+          other: "§7[§7Other§7]§r"
+        },
+        level: "§7[§6Level§7: §e{level}§7]§r",
+        team: {
+          red: "§7[§cRed§7]§r",
+          blue: "§7[§bBlue§7]§r",
+          green: "§7[§aGreen§7]§r",
+          yellow: "§7[§eYellow§7]§r",
+          white: "§7[§fWhite§7]§r",
+          orange: "§7[§6Orange§7]§r",
+          gray: "§7[§7Gray§7]§r",
+          purple: "§7[§dPurple§7]§r",
+          aqua: "§7[§3Aqua§7]§r",
+          black: "§7[§0Black§7]§r",
+          other: "§7[§7Other§7]§r",
+        }
+      }
+    },
+    nameTag: {
+      state: true,
+      structure: {
+        owner: "{status}§7{player}",
+        admin: "{status}§7{player}",
+        builder: "{status}§7{player}",
+        member: "{status}§7{player}",
         custom: {}
       },
       format: {
@@ -91,6 +141,9 @@ export default {
       starve: "§cDeath §7▶ §e{player} §r§cstarved to death",
       void: "§cDeath §7▶ §e{player} §r§cfell out of the world",
       wither: "§cDeath §7▶ §e{player} §r§cwithered away",
+    },
+    verify: {
+      state: true
     },
     players: {},
     antiCheat: {
@@ -483,6 +536,16 @@ export default {
         punishment: "tempkick",
         flags: 10
       },
+      nukerH: {
+        state: true,
+        punishment: "tempkick",
+        flags: 10
+      },
+      phaseA: {
+        state: true,
+        punishment: "tempkick",
+        flags: 10
+      },
       reachA: {
         state: true,
         punishment: "tempkick",
@@ -558,6 +621,11 @@ export default {
         flags: 10
       },
       scaffoldK: {
+        state: true,
+        punishment: "tempkick",
+        flags: 10
+      },
+      scaffoldL: {
         state: true,
         punishment: "tempkick",
         flags: 10

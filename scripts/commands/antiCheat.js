@@ -23,6 +23,7 @@ import { nameSpoof } from "./antiCheat/nameSpoof"
 import { noFall } from "./antiCheat/noFall"
 import { noSlowDown } from "./antiCheat/noSlowDown"
 import { nuker } from "./antiCheat/nuker"
+import { phase } from "./antiCheat/phase"
 import { reach } from "./antiCheat/reach"
 import { scaffold } from "./antiCheat/scaffold"
 import { spammer } from "./antiCheat/spammer"
@@ -62,6 +63,7 @@ export default {
         [`${setting.default.data.commands.normalPrefix}anti-cheat §dno-slow-down`, Hutao.Player.getLanguage(player).commandAntiCheatNoSlowDownSetting],
         [`${setting.default.data.commands.normalPrefix}anti-cheat §dnuker`, Hutao.Player.getLanguage(player).commandAntiCheatNukerSetting],
         [`${setting.default.data.commands.normalPrefix}anti-cheat §dopen`, Hutao.Player.getLanguage(player).commandOpenAntiCheatMenu],
+        [`${setting.default.data.commands.normalPrefix}anti-cheat §dphase`, Hutao.Player.getLanguage(player).commandAntiCheatPhaseSetting],
         [`${setting.default.data.commands.normalPrefix}anti-cheat §dreach`, Hutao.Player.getLanguage(player).commandAntiCheatReachSetting],
         [`${setting.default.data.commands.normalPrefix}anti-cheat §dscaffold`, Hutao.Player.getLanguage(player).commandAntiCheatScaffoldSetting],
         [`${setting.default.data.commands.normalPrefix}anti-cheat §dspammer`, Hutao.Player.getLanguage(player).commandAntiCheatSpammerSetting],
@@ -111,6 +113,8 @@ export default {
       noSlowDown(player, command)
     } else if (command[1] == "nuker") {
       nuker(player, command)
+    } else if (command[1] == "phase") {
+      phase(player, command)
     } else if (command[1] == "reach") {
       reach(player, command)
     } else if (command[1] == "scaffold") {

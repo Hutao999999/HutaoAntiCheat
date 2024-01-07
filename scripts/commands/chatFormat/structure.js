@@ -29,7 +29,7 @@ export const structure = (player, command) => {
       [`${setting.default.data.commands.normalPrefix}chat-format structure §dadmin`, Hutao.Player.getLanguage(player).commandChatFormatStructureAdmin],
       [`${setting.default.data.commands.normalPrefix}chat-format structure §dbuilder`, Hutao.Player.getLanguage(player).commandChatFormatStructureBuilder],
       [`${setting.default.data.commands.normalPrefix}chat-format structure §dmember`, Hutao.Player.getLanguage(player).commandChatFormatStructureMember],
-      [`${setting.default.data.commands.normalPrefix}chat-format structure §dopen`, Hutao.Player.getLanguage(player).comman4dOpenChatFormatStructure],
+      [`${setting.default.data.commands.normalPrefix}chat-format structure §dopen`, Hutao.Player.getLanguage(player).commandOpenChatFormatStructure],
       [`${setting.default.data.commands.normalPrefix}chat-format structure §dother`, Hutao.Player.getLanguage(player).commandChatFormatStructureOther],
       [`${setting.default.data.commands.normalPrefix}chat-format structure §downer`, Hutao.Player.getLanguage(player).commandChatFormatStructureOwner],
     )
